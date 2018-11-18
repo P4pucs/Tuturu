@@ -5,10 +5,10 @@ import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
-
-import com.sajt.kevin.tuturu.math.FFT;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -152,6 +152,7 @@ public class Recorder {
         return bytes;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void magic() {
 
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + "audio_record" + ".wav");
@@ -182,21 +183,18 @@ public class Recorder {
         for (int i =0;i<src.length;i++) {
             sampleBuffer[i] = src[i];
         }
-/*
-        for (double asd : sampleBuffer) {
-            System.out.println("sampleBuffer: " + asd);
-        }
-*/
-        double[] spectrum = FFT.fftMagnitude(sampleBuffer);//Spectrum(sampleBuffer);
-        double[] mel = compute(spectrum);
+
+        double[] spectrum = Spectrum(sampleBuffer);
 
         for(double aspectrum : spectrum) {
             System.out.println("spectrum: " + aspectrum);
         }
 
-        for(double mels : mel) {
-            System.out.println("mel: " + mels);
-        }
+//        double[] mel = compute(spectrum);
+//
+//        for(double mels : mel) {
+//            System.out.println("mel: " + mels);
+//        }
 
         //double mse = MSE(mel, amel, mel.length);
 

@@ -3,7 +3,10 @@ package com.sajt.kevin.tuturu.math;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import java.text.DecimalFormat;
+
 public class DSP {
+
     public static int RAW = 1;
     public static int DECIBEL = 2;
     private static double[] melWorkingFrequencies = new double[]{ 10.0, 20.0, 90.0, 300.0, 680.0, 1270.0, 2030.0, 2970.0, 4050.0, 5250.0, 6570.0 };
@@ -14,13 +17,32 @@ public class DSP {
         //int pow2Samples = FFT.NextPowerOfTwo((int)x.Length);
         double[] xre = new double[x.length];
         double[] xim = new double[x.length];
+        double xreValue;
+        double ximValue;
+        Long xreLongBits;
+        Long ximLongBits;
 
         Compute(x.length, x, null, xre, xim);
 
         double[] decibel = new double[xre.length / 2];
 
-        for (int i = 0; i < decibel.length; i++)
-            decibel[i] = (method == DECIBEL) ? 10.0 * Math.log10((float)(Math.sqrt((xre[i] * xre[i]) + (xim[i] * xim[i])))) : (float)(Math.sqrt((xre[i] * xre[i]) + (xim[i] * xim[i])));
+        xre[0] = xre[1];
+        xim[0] = xim[1];
+
+        for (int i = 0; i < decibel.length; i++) {
+
+            xreLongBits = Double.doubleToLongBits(xre[i]);
+            ximLongBits = Double.doubleToLongBits(xim[i]);
+
+            xreValue = Double.longBitsToDouble(xreLongBits * xreLongBits);
+            ximValue = Double.longBitsToDouble(ximLongBits * ximLongBits);
+
+            if (method == DECIBEL) {
+                decibel[i] = 10.0 * Math.log10((Math.sqrt(xreValue + ximValue)));
+            } else {
+                decibel[i] = (Math.sqrt(xreValue + ximValue));
+            }
+        }
 
         return decibel;
     }
@@ -58,7 +80,7 @@ public class DSP {
         for (i = 0; i < NumSamples; i++) {
             j = ReverseBits(i, NumBits);
             pRealOut[j] = pRealIn[i];
-            pImagOut[j] = (double)((pImagIn == null) ? 0.0 : pImagIn[i]);
+            pImagOut[j] = (pImagIn == null) ? 0.0 : pImagIn[i];
         }
 
         /*
@@ -101,27 +123,6 @@ public class DSP {
 
                     pRealOut[j] += (tr);
                     pImagOut[j] += (ti);
-
-                    if (Double.isNaN(pRealOut[k]) || Double.isInfinite(pRealOut[k])) {
-                        pRealOut[k] = 0;
-                    }
-                    if (Double.isNaN(pImagOut[k]) || Double.isInfinite(pImagOut[k])) {
-                        pImagOut[k] = 0;
-                    }
-                    if (Double.isNaN(pRealOut[k]) || Double.isInfinite(pRealOut[j])) {
-                        pRealOut[j] = 0;
-                    }
-                    if (Double.isNaN(pImagOut[k]) || Double.isInfinite(pImagOut[j])) {
-                        pImagOut[j] = 0;
-                    }
-
-/*
-                    pRealOut[k] = (pRealOut[j] - tr);
-                    pImagOut[k] = (pImagOut[j] - ti);
-
-                    pRealOut[j] += (tr);
-                    pImagOut[j] += (ti);
-                    */
                 }
             }
             BlockEnd = BlockSize;
