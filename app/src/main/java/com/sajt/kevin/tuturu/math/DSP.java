@@ -11,7 +11,6 @@ public class DSP {
     public static int DECIBEL = 2;
     private static double[] melWorkingFrequencies = new double[]{ 10.0, 20.0, 90.0, 300.0, 680.0, 1270.0, 2030.0, 2970.0, 4050.0, 5250.0, 6570.0 };
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public static double[] Spectrum(double[] x) {
         int method = RAW;
         //int pow2Samples = FFT.NextPowerOfTwo((int)x.Length);
@@ -47,7 +46,6 @@ public class DSP {
         return decibel;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public static void Compute(int NumSamples, double[] pRealIn, double[] pImagIn,
                                double[] pRealOut, double[] pImagOut) {
 

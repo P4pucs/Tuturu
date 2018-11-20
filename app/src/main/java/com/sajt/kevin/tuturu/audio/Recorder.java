@@ -10,6 +10,8 @@ import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import com.sajt.kevin.tuturu.math.FFT;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,7 +25,7 @@ import static com.sajt.kevin.tuturu.math.DSP.*;
 public class Recorder {
     private static final String TAG = "VoiceRecord";
 
-    private static final int RECORDER_SAMPLE_RATE = 16000;
+    private static final int RECORDER_SAMPLE_RATE = 44100;
     private static final int RECORDER_CHANNELS_IN = AudioFormat.CHANNEL_IN_MONO;
     private static final int RECORDER_CHANNELS_OUT = AudioFormat.CHANNEL_OUT_MONO;
     private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
@@ -53,7 +55,7 @@ public class Recorder {
 
     public void writeAudioDataToFile() {
         //Write the output audio in byte
-        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + "audio_record" + ".waw";
+        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + "audio_record" + ".pcm";
         byte saudioBuffer[] = new byte[bufferSize];
 
         FileOutputStream os = null;
@@ -96,7 +98,7 @@ public class Recorder {
 
     public void startPlaying() {
         try {
-            PlayShortAudioFileViaAudioTrack(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + "audio_record" + ".waw");
+            PlayShortAudioFileViaAudioTrack(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + "audio_record" + ".pcm");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -110,7 +112,7 @@ public class Recorder {
         File file = new File(filePath);
         byte[] byteData = new byte[(int) file.length()];
 
-        FileInputStream in = null;
+        FileInputStream in;
         try {
             in = new FileInputStream( file );
             in.read( byteData );
@@ -120,7 +122,6 @@ public class Recorder {
         }
         // Set and push to audio track..
         int intSize = android.media.AudioTrack.getMinBufferSize(RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_OUT, RECORDER_AUDIO_ENCODING);
-        Log.d(TAG, intSize+"");
 
         AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_OUT, RECORDER_AUDIO_ENCODING, intSize, AudioTrack.MODE_STREAM);
         if (at!=null) {
@@ -135,12 +136,25 @@ public class Recorder {
     }
 
     public static double[] toDoubleArray(byte[] byteArray){
-        int times = Double.SIZE / Byte.SIZE;
-        double[] doubles = new double[byteArray.length / times];
-        for(int i=0;i<doubles.length;i++){
-            doubles[i] = ByteBuffer.wrap(byteArray, i*times, times).getDouble();
+        int SAMPLE_RESOLUTION = 16;
+        int BYTES_PER_POINT = SAMPLE_RESOLUTION / 8;
+        int[] vals = new int[byteArray.length/BYTES_PER_POINT];
+        double[] Ys = new double[byteArray.length / BYTES_PER_POINT];
+        double[] Xs = new double[byteArray.length / BYTES_PER_POINT];
+        double[] Xs2 = new double[byteArray.length / BYTES_PER_POINT];
+        byte hByte;
+        byte lByte;
+        for (int i=0; i<vals.length; i++)
+        {
+            // bit shift the byte buffer into the right variable format
+            hByte = byteArray[i * 2 + 1];
+            lByte = byteArray[i * 2 + 0];
+            vals[i] = (int)(short)((hByte << 8) | lByte);
+            //Xs[i] = i;
+            Ys[i] = vals[i];
+            //Xs2[i] = (double)i/Ys.length*RECORDER_SAMPLE_RATE/1000.0; // units are in kHz
         }
-        return doubles;
+        return Ys;
     }
 
     public static byte[] toByteArray(double[] doubleArray){
@@ -152,10 +166,9 @@ public class Recorder {
         return bytes;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void magic() {
 
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + "audio_record" + ".wav");
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + "audio_record" + ".pcm");
         byte[] byteData = new byte[(int) file.length()];
 
         try {
@@ -184,17 +197,17 @@ public class Recorder {
             sampleBuffer[i] = src[i];
         }
 
-        double[] spectrum = Spectrum(sampleBuffer);
+        double[] spectrum = FFT.fftMagnitude(sampleBuffer);//Spectrum(sampleBuffer);
 
         for(double aspectrum : spectrum) {
             System.out.println("spectrum: " + aspectrum);
         }
 
-//        double[] mel = compute(spectrum);
-//
-//        for(double mels : mel) {
-//            System.out.println("mel: " + mels);
-//        }
+        double[] mel = compute(spectrum);
+
+        for(double mels : mel) {
+            System.out.println("mel: " + mels);
+        }
 
         //double mse = MSE(mel, amel, mel.length);
 
