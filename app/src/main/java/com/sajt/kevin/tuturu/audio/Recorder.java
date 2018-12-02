@@ -140,8 +140,8 @@ public class Recorder {
         int BYTES_PER_POINT = SAMPLE_RESOLUTION / 8;
         int[] vals = new int[byteArray.length/BYTES_PER_POINT];
         double[] Ys = new double[byteArray.length / BYTES_PER_POINT];
-        double[] Xs = new double[byteArray.length / BYTES_PER_POINT];
-        double[] Xs2 = new double[byteArray.length / BYTES_PER_POINT];
+        //double[] Xs = new double[byteArray.length / BYTES_PER_POINT];
+        //double[] Xs2 = new double[byteArray.length / BYTES_PER_POINT];
         byte hByte;
         byte lByte;
         for (int i=0; i<vals.length; i++)
@@ -155,15 +155,6 @@ public class Recorder {
             //Xs2[i] = (double)i/Ys.length*RECORDER_SAMPLE_RATE/1000.0; // units are in kHz
         }
         return Ys;
-    }
-
-    public static byte[] toByteArray(double[] doubleArray){
-        int times = Double.SIZE / Byte.SIZE;
-        byte[] bytes = new byte[doubleArray.length * times];
-        for(int i=0;i<doubleArray.length;i++){
-            ByteBuffer.wrap(bytes, i*times, times).putDouble(doubleArray[i]);
-        }
-        return bytes;
     }
 
     public void magic() {
@@ -199,11 +190,12 @@ public class Recorder {
 
         double[] spectrum = FFT.fftMagnitude(sampleBuffer);//Spectrum(sampleBuffer);
 
-        for(double aspectrum : spectrum) {
-            System.out.println("spectrum: " + aspectrum);
-        }
+//        for(double aspectrum : spectrum) {
+//            System.out.println("spectrum: " + aspectrum);
+//        }
 
         double[] mel = compute(spectrum);
+
 
         for(double mels : mel) {
             System.out.println("mel: " + mels);

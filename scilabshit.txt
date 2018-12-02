@@ -1,0 +1,402 @@
+/********************************************************************
+ * Példa függvények gyökkereséshez!
+ ********************************************************************/
+
+function y=fgv(x)
+    y = x^2 - 7
+endfunction
+
+function y=fgvd(x)
+    y = 2*x
+endfunction
+
+/********************************************************************
+ * Példa mátrixok eliminációkhoz!
+ ********************************************************************/
+
+// Egy megoldható egyenletrendszer
+A1 = [2,3,1 ; -4,8,-1 ; 6,-2,10]
+b1 = [5 ; 15 ; -28]
+
+// Egy eliminált egyenletrendszer (A1,b1)
+A2 = [2,3,1 ; 0, 14, 1 ; 0, 0, 109/14]
+b2 = [5; 25; -327/14]
+
+// Egy megoldhatatlan egyenletrendszer sima gaussal!
+A3 = [0,3,1 ; -4,8,-1 ; 6,-2,10]
+b3 = [5 ; 15 ; -28]
+
+/********************************************************************
+ * Interpolációhoz példa pontok!
+ * OSZLOPVEKTOROK KELLENEK!!!
+ ********************************************************************/
+
+vx = [0;2;-3]
+vy = [-2;18;88]
+
+/********************************************************************
+ * Példa függvények integráláshoz!
+ ********************************************************************/
+
+function y=fgv2(x)
+    y=exp(tan(x))
+endfunction
+
+/********************************************************************
+ * Fixpont iteráció [check]
+ ********************************************************************/
+
+function fixpont(f, x, t)
+    lepes = 1
+    if abs(f(x)-x) < t
+        printf('A kezdőpont egyben fixpont is: %f', x)
+    end
+    while abs(f(x)-x) > t & lepes < 100 // Az eltérés fgv értékben a megállási feltételünk!
+        printf('A közelítő megoldás %d lépés után: %1.6f\n', lepes, f(x))
+        x = f(x)
+        lepes = lepes + 1
+    end
+endfunction
+
+/********************************************************************
+ * Intervallum felezés [check]
+ ********************************************************************/
+
+function intfel(f, a, b, t)
+    printf('az intervallum: %f %f\n', a, b)
+    l = 1
+    while abs(b-a)>t & l < 100 // Az intervallum aktuális hossza a megállási feltételünk!
+        c = (a+b) / 2
+        if f(a)*f(c) > 0 // Ha a kapott ertek a ballal azonos elojelben
+            a = c
+        elseif f(a)*f(c) < 0 // Ha a kapott ertek a jobbal azonos elojelben
+            b = c
+        else
+            // Mivel a fgv értéke 0 lett, pontos megoldást kaptunk!
+            printf('%d a lépés után a pontos megoldás: %1.6f\n', l, c)
+            abort
+        end
+        printf('%d lépés után a közelítő megoldás: %1.6f\n', l, c)
+        l = l + 1
+    end
+    printf('VEGE')
+endfunction
+
+/********************************************************************
+ * Húrmódszer (az [a,b] intervallumos féle gyakból!!!) [check]
+ ********************************************************************/
+
+function hurmod(f, a, b, t)
+    printf('az intervallum: %f %f\n', a, b)
+    l=1
+    c=a-f(a)*(b-a)/(f(b)-f(a))
+    while abs(f(c))>t & l<100
+        if f(a)*f(c)>0
+            a=c
+        elseif f(a)*f(c)<0
+            b=c
+        else
+            printf('%d a lépés után a pontos megoldás: %1.6f\n', l, c)
+            abort
+        end
+        printf('%d lépés után a közelítő megoldás: %1.6f\n', l, c)
+        c=a-f(a)*(b-a)/(f(b)-f(a))
+        l=l+1
+    end
+    printf('VEGE')
+endfunction
+
+/********************************************************************
+ * Érintő módszer (Newton) [check]
+ ********************************************************************/
+
+function erinto(f, fd, x, t)
+    printf('Newton erito modszer!\n')
+    lepes = 1
+    if abs(f(x)) < t
+        printf('Kezdopont egyben megoldas is\n')
+        abort
+    end
+    if fd(x) == 0
+        printf('Nincs megoldas, az erinto parhuzamos X tengellyel!\n')
+        abort
+    end
+    while abs(f(x)) > t & lepes < 100 // Függvény érték a megállási kritérium
+        x = x - (f(x)/fd(x))
+        printf('A kozelito megoldas %d lepes utan: %1.6f\n', lepes, x)
+        lepes = lepes + 1
+        if (fd(x) == 0)
+            printf('Nincs megoldas, az erinto parhuzamos X tengellyel!\n')
+            abort
+        end
+    end
+endfunction
+
+/********************************************************************
+ * Szelő módszer (xn+1, xn, xn-1 gyakból!!!) [check]
+ ********************************************************************/
+
+function szelo(f, xp, x, t)
+    lepes = 1
+    
+    if f(xp) == 0
+        printf('%1.6f megoldás!\n', xp)
+    end
+    if f(x) == 0
+        printf('%1.6f megoldás!\n', x)
+    end
+    if f(x)-f(xp) == 0
+        printf('A szelő párhuzamos az X tengellyel\n')
+        abort
+    end
+    
+    // xp az x0 -> x previous
+    // x az x1 -> x
+    // xn azaz x2-t kell meghatározni -> x next
+    xn = x - ( ( f(x) * (x-xp) ) / ( f(x) - f(xp) ) )
+    
+    while abs(f(xn)) > t & lepes < 100
+        printf('A közelítő megoldás %d lépés után: %1.6f\n', lepes, xn)
+        xp = x
+        x = xn
+        if f(x)-f(xp) == 0
+            printf('A szelő párhuzamos az X tengellyel\n')
+            abort
+        end
+        xn = x - ( ( f(x) * (x-xp) ) / ( f(x) - f(xp) ) )
+        lepes = lepes+1
+    end
+endfunction
+
+/********************************************************************
+ * Trianguláris egyenletrendszer megoldása [check]
+ ********************************************************************/
+
+function triang(A)
+    n = size(A)(1) // sorok száma!
+    disp(A)
+    // utolsótól az első sorig megyünk
+    for i = n:-1:1
+        // legyen a megoldás vektor értéke a jobb oldali szám
+        megold(i) = A(i,n+1)
+        // menjünk végig a főátlótól jobbra lévő értékekre
+        // elsőre nem fog lefutni!!! mert n+1 től fog menni n-ig...
+        for j = i+1:n
+            // vonjuk ki a megoldásból az értékek ismert megoldásszorosait
+            sub = (A(i,j) * megold(j))
+            megold(i) = megold(i)-sub
+        end
+        // végül osszuk le a főátlóbeli elemmel hogy megkapjuk az új megoldást!
+        megold(i) = megold(i) / A(i,i)
+    end
+    disp('A megoldások, x1 -> xn ig:')
+    disp(megold)
+endfunction
+
+/********************************************************************
+ * Egy oszlop eliminálása [check]
+ ********************************************************************/
+
+function A=egyoszlop(A)
+    n = size(A)(1) // sorok száma
+    for i = 2:n
+        k = A(i,1) / A(1,1) // elem osztva főelem a delta
+        A(i,:) = A(i,:) - k*A(1,:) // sorból kivonjuk a főelem sorának deltaszorosát!!!
+    end
+endfunction
+
+/********************************************************************
+ * Gauss elimináció [check]
+ ********************************************************************/
+
+function gauss(A)
+    n = size(A)(1) // sorok száma
+    disp(A)
+    for i = 1:n-1
+        if A(i,i) == 0
+            printf('A főátlóban 0 van!\n')
+            abort
+        else
+            A(i:n, i:n+1) = egyoszlop(A(i:n, i:n+1))
+        end
+    end
+    triang(A)
+endfunction
+
+/********************************************************************
+ * Egy sor cseréje a mátrixban az abs maxxal! [check]
+ ********************************************************************/
+
+function A=sorcsere(A)
+    [val,id] = max(abs(A(:,1))) // max két számmal tér vissza!
+    if id ~= 1
+        tmp = A(1,:)
+        A(1,:) = A(id,:)
+        A(id,:) = tmp
+    end
+endfunction
+
+/********************************************************************
+ * Részleges főelem kiv. gauss! [check]
+ ********************************************************************/
+
+function rgauss(A)
+    n = size(A)(1) // sorok száma
+    disp(A)
+    for i = 1:n-1
+        A(i:n, i:n+1) = sorcsere(A(i:n, i:n+1))
+        if A(i,i) == 0
+            printf('A főátlóban 0 van!\n')
+            abort
+        else
+            A(i:n, i:n+1) = egyoszlop(A(i:n, i:n+1))
+        end
+    end
+    triang(A)
+endfunction
+
+/********************************************************************
+ * Gauss-Jordan!!! [check]
+ ********************************************************************/
+
+function A=jegyoszlop(A, idx)
+    n = size(A)(1) // sorok száma
+    for i = 1:n
+        if i ~= idx
+            k = A(i,1) / A(idx,1)
+            A(i,:) = A(i,:) - k*A(idx,:)
+        end
+    end
+    disp(A)
+endfunction
+
+function jgauss(A)
+    n = size(A)(1) // sorok száma
+    for i = 1:n
+        if A(i,i) == 0
+            printf('A főátlóban 0 van!\n')
+            abort
+        else
+            A(:, i:n+1) = jegyoszlop(A(:, i:n+1), i)
+        end
+    end
+    for i = 1:n
+        m = A(i,n+1) / A(i,i)
+        disp(m)
+    end
+    disp(A)
+endfunction
+
+/********************************************************************
+ * Mátrix invertálás!!! [check]
+ ********************************************************************/
+
+function jinv(A)
+    n = size(A)(1) // sorok száma
+    A = [A,eye(n,n)] // hozzáadunk egy egységmátrixot...
+    for i = 1:n
+        if A(i,i) == 0
+            printf('A főátlóban 0 van!\n')
+            abort
+        else
+            A(:, i:2*n) = jegyoszlop(A(:, i:2*n), i)
+        end
+    end
+    // összes sort leosztjuk a főátlóbeli elemmel!
+    for i = 1:n
+        A(i,:) = A(i,:)/A(i,i)
+    end
+    I = A(:, n+1:2*n) // az inverz mátrix!
+    disp('Az inverz matrix:')
+    disp(I)
+endfunction
+
+/********************************************************************
+ * Lagrange interpoláció (Vandermonde) [check]
+ ********************************************************************/
+
+function lagrange(x,y)
+    // x az x pontok vektora, y az y pontok vektora!
+    if length(x) ~= length(y)
+        printf('rossz paraméterek!\n')
+        abort
+    end
+    // V mátrix létrehozása
+    n = length(x)
+    for i = 1:n
+        for j = 1:n
+            V(i,j) = x(i)^(j-1)
+        end
+    end
+    if det(V) == 0
+        printf('nem függvényt ír le a megadott x,y vektor páros! determináns 0\n')
+        abort
+    end
+    c = V\y // inv(V) * y
+    disp(c)
+    /*
+     * c(0)*x^0 + c(1)*x^1 + c(2)*x^2  -- stb
+     */
+endfunction
+
+/********************************************************************
+ * Integrálás: trapéz szabály [check]
+ ********************************************************************/
+
+function trapez(f, a, b, oszt)
+    // oszt részre osztjuk az [a,b]-t
+    h = (b-a) / oszt // h a két pont közötti távolság
+    x = a:h:b // x-et töltsük fel az osztópont koordinátákkal
+    
+    m = f(a) + f(b)
+    for i = 2:oszt
+        m = m + 2*f(x(i))
+    end
+    m = m * h/2
+    
+    printf('A közelítő megoldás %d részre osztva az intervallumot: %1.14f\n', oszt, m)
+endfunction
+
+/********************************************************************
+ * Integrálás: simpson szabály, (hány részre osszuk) [check]
+ ********************************************************************/
+
+function simpson(f, a, b, oszt)
+    // ha oszt = hány részre osztjuk az intervallumot
+    if modulo(oszt, 2) ~= 0
+        printf('oszt-nak párosnak kell lennie!\n')
+        abort
+    end
+    h = (b-a) / oszt
+    x = a:h:b
+    m = f(a) + f(b)
+    for i = 2:oszt
+        if (modulo(i, 2) == 0)
+            m = m + 4*f(x(i)) // páros indexűeket 4x... matekban fordítva van!!!
+        else
+            m = m + 2*f(x(i)) // páratlan indexűeket 2x... matekban fordítva van!!!
+        end
+    end
+    m = h/3 * m
+    printf('A közelítő megoldás %d részre osztva az intervallumot: %1.14f\n', oszt, m)
+endfunction
+
+/********************************************************************
+ * Integrálás: simpson szabály, (hányszor alkalmazzuk) [check]
+ ********************************************************************/
+
+function simpson2(f, a, b, n)
+    // ha n = hányszor alkalmazzuk a simpson szabályt!
+    h = (b-a) / n
+    x = a:h/2:b
+    m = f(a) + f(b)
+    for i = 2:2*n
+        if (modulo(i, 2) == 0)
+            m = m + 4*f(x(i)) // páros indexűeket 4x... matekban fordítva van!!!
+        else
+            m = m + 2*f(x(i)) // páratlan indexűeket 2x... matekban fordítva van!!!
+        end
+    end
+    m = h/6 * m
+    printf('A közelítő megoldás %dx alkalmazva a szabályt: %1.14f\n', n, m)
+endfunction
