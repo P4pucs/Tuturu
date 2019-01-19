@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import com.sajt.kevin.tuturu.math.DSP;
 import com.sajt.kevin.tuturu.math.FFT;
 
 import java.io.File;
@@ -196,12 +197,21 @@ public class Recorder {
 
         double[] mel = compute(spectrum);
 
+        double[] melToCompare = new double[]{26.07592934144376, 4.279418682382843, 3.7872055066332145E-16,
+                                                4.250743794378222, -0.0, 0.0, 1.355728245784627, 3.7872055066332145E-15, 0.0, 0.0, 0.0};
 
-        for(double mels : mel) {
-            System.out.println("mel: " + mels);
-        }
+//        for(double mels : mel) {
+//            System.out.println("mel: " + mels);
+//        }
+//
+//        for(double melsCmp : melToCompare) {
+//            System.out.println("melsCmp: " + melsCmp);
+//        }
+//
+        double mse = MSE(melToCompare, mel, melToCompare.length);
 
-        //double mse = MSE(mel, amel, mel.length);
+        System.out.println("mellength: " + mel.length + " meltocmp lenght: " + melToCompare.length);
+        System.out.println("mse: " + mse);
 
     }
 }

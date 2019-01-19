@@ -194,7 +194,7 @@ public class DSP {
     }
 
     public static double mel(double value) {
-        return (2595.0 * (double)Math.log10(1.0 + value / 700.0));
+        return (2595.0 * Math.log10(1.0 + value / 700.0));
     }
 
     public static double Triangular(double value, double samples) {
