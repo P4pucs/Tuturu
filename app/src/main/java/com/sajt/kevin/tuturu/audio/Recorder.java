@@ -145,6 +145,7 @@ public class Recorder {
         //double[] Xs2 = new double[byteArray.length / BYTES_PER_POINT];
         byte hByte;
         byte lByte;
+
         for (int i=0; i<vals.length; i++)
         {
             // bit shift the byte buffer into the right variable format
@@ -155,7 +156,15 @@ public class Recorder {
             Ys[i] = vals[i];
             //Xs2[i] = (double)i/Ys.length*RECORDER_SAMPLE_RATE/1000.0; // units are in kHz
         }
-        return Ys;
+
+        double[] magicYs = new double[Ys.length];
+        //magicYs[0] = Ys[0] * 0.95;
+        for (int i=0; i<magicYs.length-1; i++)
+        {
+            magicYs[i] = Ys[i+1] - 0.95 * Ys[i];
+        }
+        return magicYs;
+//        return Ys;
     }
 
     public void magic() {
@@ -197,8 +206,8 @@ public class Recorder {
 
         double[] mel = compute(spectrum);
 
-        double[] melToCompare = new double[]{26.07592934144376, 4.279418682382843, 3.7872055066332145E-16,
-                                                4.250743794378222, -0.0, 0.0, 1.355728245784627, 3.7872055066332145E-15, 0.0, 0.0, 0.0};
+        double[] melToCompare = new double[]{20.294107140953532, 3.189285651506059, 1.8936027533166073E-16,
+                3.0658660221501703, 0.0, 0.0, 2.148655341121079, 0.0, 0.0, 0.0, 0.0};
 
 //        for(double mels : mel) {
 //            System.out.println("mel: " + mels);
@@ -207,7 +216,7 @@ public class Recorder {
 //        for(double melsCmp : melToCompare) {
 //            System.out.println("melsCmp: " + melsCmp);
 //        }
-//
+
         double mse = MSE(melToCompare, mel, melToCompare.length);
 
         System.out.println("mellength: " + mel.length + " meltocmp lenght: " + melToCompare.length);

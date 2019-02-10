@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Tuturu</string>
     <string name="title_activity_sajt">sajt</string>
+    <string name="title_activity_mpmain">MPMainActivity</string>
 </resources>
