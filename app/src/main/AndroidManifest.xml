@@ -20,7 +20,7 @@
             <!--</intent-filter>-->
         <!--</activity>-->
         <activity
-            android:name=".musicplayer.MPMainActivity"
+            android:name=".musicplayer.PlayerActivity"
             android:label="@string/title_activity_mpmain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
