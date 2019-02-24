@@ -25,6 +25,8 @@ import static com.sajt.kevin.tuturu.math.DSP.*;
 
 
 public class Recorder {
+    private static String Name;
+
     private static final String TAG = "VoiceRecord";
 
     private static final int RECORDER_SAMPLE_RATE = 44100;
@@ -41,6 +43,9 @@ public class Recorder {
     // Initialize minimum buffer size in bytes.
     private int bufferSize = AudioRecord.getMinBufferSize(RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_IN, RECORDER_AUDIO_ENCODING);
 
+    public Recorder(String name) {
+        Name = name;
+    }
 
     public void startRecorder() {
 
@@ -57,7 +62,7 @@ public class Recorder {
 
     public void writeAudioDataToFile() {
         //Write the output audio in byte
-        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + "audio_record" + ".pcm";
+        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + "audio_record" + Name + ".pcm";
         byte saudioBuffer[] = new byte[bufferSize];
 
         FileOutputStream os = null;
@@ -100,7 +105,7 @@ public class Recorder {
 
     public void startPlaying() {
         try {
-            PlayShortAudioFileViaAudioTrack(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + "audio_record" + ".pcm");
+            PlayShortAudioFileViaAudioTrack(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + "audio_record" + Name + ".pcm");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -170,7 +175,7 @@ public class Recorder {
 
     public void magic() {
 
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + "audio_record" + ".pcm");
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + "audio_record" + Name + ".pcm");
         byte[] byteData = new byte[(int) file.length()];
 
         try {

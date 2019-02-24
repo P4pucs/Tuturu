@@ -15,12 +15,14 @@ import com.sajt.kevin.tuturu.audio.Recorder;
 public class RecorderActivity extends AppCompatActivity {
 
     //private Player player = new Player();
-    private Recorder recorder;
+    private Recorder recorder1, recorder2;
 
 
     final int REQUEST_PERMISSION_CODE = 1000;
 
-    Button btnRecord, btnStopRecord, btnPlay, btnMagic;
+    Button btnRecord1, btnStopRecord1, btnPlay1;
+    Button btnRecord2, btnStopRecord2, btnPlay2;
+    Button btnMagic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,35 +30,64 @@ public class RecorderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recorder);
 
         if (checkPermissionFromDevice()) {
-            recorder = new Recorder();
+            //RECORDER 111111111111111111
+            recorder1 = new Recorder("1");
 
-            btnRecord = (Button)findViewById(R.id.recorderButton);
-            btnRecord.setOnClickListener((view) -> {
+            btnRecord1 = (Button)findViewById(R.id.recorder1Button);
+            btnRecord1.setOnClickListener((view) -> {
                 Toast.makeText(RecorderActivity.this,"Recording...", Toast.LENGTH_SHORT).show();
-                btnRecord.setEnabled(false);
-                btnStopRecord.setEnabled(true);
-                recorder.startRecorder();
+                btnRecord1.setEnabled(false);
+                btnStopRecord1.setEnabled(true);
+                recorder1.startRecorder();
             });
 
-            btnStopRecord = (Button)findViewById(R.id.stopRecorderButton);
-            btnStopRecord.setEnabled(false);
-            btnStopRecord.setOnClickListener((view) -> {
+            btnStopRecord1 = (Button)findViewById(R.id.stopRecorder1Button);
+            btnStopRecord1.setEnabled(false);
+            btnStopRecord1.setOnClickListener((view) -> {
                 Toast.makeText(RecorderActivity.this,"stopped", Toast.LENGTH_SHORT).show();
-                recorder.stopRecording();
-                btnRecord.setEnabled(true);
-                btnStopRecord.setEnabled(false);
+                recorder1.stopRecording();
+                btnRecord1.setEnabled(true);
+                btnStopRecord1.setEnabled(false);
             });
 
-            btnPlay = (Button)findViewById(R.id.playButton);
-            btnPlay.setOnClickListener((view) -> {
+            btnPlay1 = (Button)findViewById(R.id.play1Button);
+            btnPlay1.setOnClickListener((view) -> {
                 Toast.makeText(RecorderActivity.this,"playing...", Toast.LENGTH_SHORT).show();
-                recorder.startPlaying();
+                recorder1.startPlaying();
             });
 
+            //RECORDER 2222222222222222222
+
+            recorder2 = new Recorder("2");
+
+            btnRecord2 = (Button)findViewById(R.id.recorder2Button);
+            btnRecord2.setOnClickListener((view) -> {
+                Toast.makeText(RecorderActivity.this,"Recording...", Toast.LENGTH_SHORT).show();
+                btnRecord2.setEnabled(false);
+                btnStopRecord2.setEnabled(true);
+                recorder2.startRecorder();
+            });
+
+            btnStopRecord2 = (Button)findViewById(R.id.stopRecorder2Button);
+            btnStopRecord2.setEnabled(false);
+            btnStopRecord2.setOnClickListener((view) -> {
+                Toast.makeText(RecorderActivity.this,"stopped", Toast.LENGTH_SHORT).show();
+                recorder2.stopRecording();
+                btnRecord2.setEnabled(true);
+                btnStopRecord2.setEnabled(false);
+            });
+
+            btnPlay2 = (Button)findViewById(R.id.play2Button);
+            btnPlay2.setOnClickListener((view) -> {
+                Toast.makeText(RecorderActivity.this,"playing...", Toast.LENGTH_SHORT).show();
+                recorder2.startPlaying();
+            });
+
+            // MAGIC
             btnMagic = (Button)findViewById(R.id.magicButton);
             btnMagic.setOnClickListener((view) -> {
                 Toast.makeText(RecorderActivity.this,"MAGIC", Toast.LENGTH_SHORT).show();
-                recorder.magic();
+                recorder1.magic();
             });
         } else {
             requestPermission();
