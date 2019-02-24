@@ -157,8 +157,8 @@ public class Recorder {
             //Xs2[i] = (double)i/Ys.length*RECORDER_SAMPLE_RATE/1000.0; // units are in kHz
         }
 
+        //signal filtering
         double[] magicYs = new double[Ys.length];
-        //magicYs[0] = Ys[0] * 0.95;
         for (int i=0; i<magicYs.length-1; i++)
         {
             magicYs[i] = Ys[i+1] - 0.95 * Ys[i];
@@ -198,6 +198,7 @@ public class Recorder {
             sampleBuffer[i] = src[i];
         }
 
+
         double[] spectrum = FFT.fftMagnitude(sampleBuffer);//Spectrum(sampleBuffer);
 
 //        for(double aspectrum : spectrum) {
@@ -206,16 +207,16 @@ public class Recorder {
 
         double[] mel = compute(spectrum);
 
-        double[] melToCompare = new double[]{20.294107140953532, 3.189285651506059, 1.8936027533166073E-16,
-                3.0658660221501703, 0.0, 0.0, 2.148655341121079, 0.0, 0.0, 0.0, 0.0};
+        double[] melToCompare = new double[]{19.34483364510596, 3.3787166652097866, 0.0,
+                2.8131725546904125, -3.3138048183040627E-16, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 
-//        for(double mels : mel) {
-//            System.out.println("mel: " + mels);
-//        }
-//
-//        for(double melsCmp : melToCompare) {
-//            System.out.println("melsCmp: " + melsCmp);
-//        }
+        for(double mels : mel) {
+            System.out.println("mel: " + mels);
+        }
+
+        for(double melsCmp : melToCompare) {
+            System.out.println("melsCmp: " + melsCmp);
+        }
 
         double mse = MSE(melToCompare, mel, melToCompare.length);
 
