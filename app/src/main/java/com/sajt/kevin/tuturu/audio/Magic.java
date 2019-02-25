@@ -17,6 +17,20 @@ public class Magic {
         double[] sajt1 = FFT.fftMagnitude(nextPowOfTwo(toDoubleArray(readAudioFile(audio1))));
         double[] sajt2 = FFT.fftMagnitude(nextPowOfTwo(toDoubleArray(readAudioFile(audio2))));
 
+        int sajt = 100;
+
+        double[] sajt3 = new double[sajt];
+        double[] sajt4 = new double[sajt];
+        for (int i=0;i<sajt;i++) {
+            sajt3[i] = sajt1[i];
+            sajt4[i] = sajt2[i];
+        }
+        double[] alma = DSPC.xcorr(sajt3, sajt4);
+
+        for (double krumpli : alma) {
+            System.out.println("krumpli: " + krumpli);
+        }
+
     }
 
     // converts byte array to double array
@@ -42,13 +56,13 @@ public class Magic {
         }
 
         //signal filtering
-        double[] magicYs = new double[Ys.length];
-        for (int i=0; i<magicYs.length-1; i++)
-        {
-            magicYs[i] = Ys[i+1] - 0.95 * Ys[i];
-        }
-        return magicYs;
-//        return Ys;
+//        double[] magicYs = new double[Ys.length];
+//        for (int i=0; i<magicYs.length-1; i++)
+//        {
+//            magicYs[i] = Ys[i+1] - 0.95 * Ys[i];
+//        }
+//        return magicYs;
+        return Ys;
     }
 
     // reads raw audio file into byte array
@@ -85,6 +99,11 @@ public class Magic {
         System.out.println("nextpowoftwo: " + sampleBuffer.length);
 
         return sampleBuffer;
+    }
+
+    public static double roundDown6(double d) {
+        return ((long)(d * 1e6)) / 1e6;
+        //Long typecast will remove the decimals
     }
 
 }
