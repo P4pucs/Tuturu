@@ -23,6 +23,7 @@ public class RecorderActivity extends AppCompatActivity {
     private static Button btnRecord2, btnStopRecord2, btnPlay2;
     private static Button btnMagic;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

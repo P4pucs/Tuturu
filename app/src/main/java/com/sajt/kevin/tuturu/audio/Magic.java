@@ -13,24 +13,60 @@ import java.io.IOException;
 public class Magic {
 
     public static void magic(String audio1, String audio2) {
+// threading for later
+//        new Thread(() -> {
+//            double[] signal1 = compressor(FFT.fftMagnitude(nextPowOfTwo(DSPC.todouble(readAudioFile(audio1)))), 10);
+//            System.out.println("DONE 1111111111" + " size: " + signal1.length);
+//        }).start();
+//
+//        new Thread(() -> {
+//            double[] signal2 = compressor(FFT.fftMagnitude(nextPowOfTwo(DSPC.todouble(readAudioFile(audio2)))), 10);
+//            System.out.println("DONE 2222222222" + " size: " + signal2.length);
+//        }).start();
+//        double[] sajt1 = FFT.fftMagnitude(nextPowOfTwo(DSPC.todouble(readAudioFile(audio1))));
+//        double[] sajt2 = FFT.fftMagnitude(nextPowOfTwo(DSPC.todouble(readAudioFile(audio2))));
 
-        double[] sajt1 = FFT.fftMagnitude(nextPowOfTwo(toDoubleArray(readAudioFile(audio1))));
-        double[] sajt2 = FFT.fftMagnitude(nextPowOfTwo(toDoubleArray(readAudioFile(audio2))));
 
-        int sajt = 100;
+//        int sajt = 5000;
+//
+//        double[] sajt3 = new double[sajt];
+//        double[] sajt4 = new double[sajt];
+//        for (int i=0;i<sajt;i++) {
+//            sajt3[i] = sajt1[i];
+//            sajt4[i] = sajt2[i];
+//        }
+//
+//        double[] krumpli = DSPC.xcorr(sajt3, sajt4);
+////            for (double asd : krumpli) {
+////                System.out.println("krumplisteszta: " + asd);
+////            }
+//
+//            double max = DSPC.max(krumpli);
+//            double min = DSPC.min(krumpli);
+//            System.out.println("krumplisteszta MAX: " + max);
+//            System.out.println("krumplisteszta min: " + min);
 
-        double[] sajt3 = new double[sajt];
-        double[] sajt4 = new double[sajt];
-        for (int i=0;i<sajt;i++) {
-            sajt3[i] = sajt1[i];
-            sajt4[i] = sajt2[i];
-        }
-        double[] alma = DSPC.xcorr(sajt3, sajt4);
+//        Thread thread = new Thread(() -> {
+//            System.out.println("krumplisteszta thread started");
+//            double[] alma = DSPC.xcorr(sajt1, sajt2);
+//
+//            for (double krumpli : alma) {
+//                System.out.println("krumplisteszta: " + krumpli);
+//            }
+//        });
+//        thread.start();
 
-        for (double krumpli : alma) {
-            System.out.println("krumpli: " + krumpli);
-        }
 
+        long startTime = System.currentTimeMillis();
+
+        double[] signal1 = compressor(FFT.fftMagnitude(hamming(nextPowOfTwo(DSPC.todouble(readAudioFile(audio1))))), 10);
+        double[] signal2 = compressor(FFT.fftMagnitude(hamming(nextPowOfTwo(DSPC.todouble(readAudioFile(audio2))))), 30);
+        double[] xcorr = DSPC.xcorr(signal1, signal2);
+
+        long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+
+        System.out.println("max: " + DSPC.max(xcorr) + " min: " + DSPC.min(xcorr) + " elapsed time: " + elapsedTime);
     }
 
     // converts byte array to double array
@@ -91,19 +127,46 @@ public class Magic {
                 nextpowtwo *= 2;
             }
         }
+
         double[] sampleBuffer = new double[nextpowtwo];
 
         for (int i =0;i<array.length;i++) {
             sampleBuffer[i] = array[i];
         }
-        System.out.println("nextpowoftwo: " + sampleBuffer.length);
-
+        //System.out.println("nextpowoftwo: " + nextpowtwo);
         return sampleBuffer;
     }
 
-    public static double roundDown6(double d) {
-        return ((long)(d * 1e6)) / 1e6;
-        //Long typecast will remove the decimals
+    private static double[] reverse(double[] array) {
+        for(int i = 0; i < array.length / 2; i++)
+        {
+            double temp = array[i];
+            array[i] = array[array.length - i - 1];
+            array[array.length - i - 1] = temp;
+        }
+        return array;
+    }
+
+    private static double[] compressor(double[] array, int ratio) {
+        double[] newArray = new double[array.length/ratio];
+        int index = 0;
+        for (int i=0;i<array.length;i+=ratio) {
+            newArray[index] = array[i];
+        }
+        return newArray;
+    }
+
+    private static double[] hamming(double[] signal) {
+
+        double [] newSignal = new double[signal.length];
+        int samples = signal.length / 2;
+        double r = Math.PI / samples;
+
+        for (int i = -samples; i<samples; i++) {
+            newSignal[samples+ i] = 0.54 + 0.46 * Math.cos(i * r);
+        }
+
+        return newSignal;
     }
 
 }

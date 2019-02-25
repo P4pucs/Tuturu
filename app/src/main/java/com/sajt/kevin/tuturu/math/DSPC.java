@@ -88,12 +88,12 @@ public class DSPC
 
         return xcorr(a, b, len-1);
 
-        // // reverse b in time
-        // double[] brev = new double[b.length];
-        // for(int x = 0; x < b.length; x++)
-        //     brev[x] = b[b.length-x-1];
-        //
-        // return conv(a, brev);
+         // reverse b in time
+//         double[] brev = new double[b.length];
+//         for(int x = 0; x < b.length; x++)
+//             brev[x] = b[b.length-x-1];
+//
+//         return conv(a, brev);
     }
 
     /**

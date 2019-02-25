@@ -26,6 +26,15 @@ public class FFT {
         return x;
     }
 
+    public static double[] ifftMagnitude(double[] signal) {
+        Complex[] spectrum = ifft(Complex.toComplex(signal));
+        double[] x = new double[spectrum.length];
+        for (int i = 0; i < x.length; i++) {
+            x[i] = spectrum[i].abs();
+        }
+        return x;
+    }
+
     // compute the FFT of x[], assuming its length is a power of 2
     public static Complex[] fft(Complex[] x) {
         int n = x.length;
