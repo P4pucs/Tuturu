@@ -23,7 +23,7 @@ public class PlayerActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_controller);
-        playBtn = (Button) findViewById(R.id.playButton);
+        //playBtn = (Button) findViewById(R.id.playButton);
         settingsBtn = (Button) findViewById(R.id.settingsButton);
         settingsBtn.setOnClickListener((view) -> {
             startActivity(new Intent(PlayerActivity.this, RecorderActivity.class));

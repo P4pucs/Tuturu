@@ -60,7 +60,7 @@
         android:id="@+id/play2Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/recorder1Button"
+        android:layout_alignStart="@+id/play1Button"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="188dp"
         android:layout_marginBottom="233dp"

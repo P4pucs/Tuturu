@@ -10,19 +10,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.sajt.kevin.tuturu.audio.Magic;
 import com.sajt.kevin.tuturu.audio.Recorder;
 
 public class RecorderActivity extends AppCompatActivity {
 
-    //private Player player = new Player();
-    private Recorder recorder1, recorder2;
-
 
     final int REQUEST_PERMISSION_CODE = 1000;
 
-    Button btnRecord1, btnStopRecord1, btnPlay1;
-    Button btnRecord2, btnStopRecord2, btnPlay2;
-    Button btnMagic;
+    private Recorder recorder1, recorder2;
+    private static Button btnRecord1, btnStopRecord1, btnPlay1;
+    private static Button btnRecord2, btnStopRecord2, btnPlay2;
+    private static Button btnMagic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +30,7 @@ public class RecorderActivity extends AppCompatActivity {
 
         if (checkPermissionFromDevice()) {
             //RECORDER 111111111111111111
-            recorder1 = new Recorder("1");
+            recorder1 = new Recorder("audio1");
 
             btnRecord1 = (Button)findViewById(R.id.recorder1Button);
             btnRecord1.setOnClickListener((view) -> {
@@ -58,7 +57,7 @@ public class RecorderActivity extends AppCompatActivity {
 
             //RECORDER 2222222222222222222
 
-            recorder2 = new Recorder("2");
+            recorder2 = new Recorder("audio2");
 
             btnRecord2 = (Button)findViewById(R.id.recorder2Button);
             btnRecord2.setOnClickListener((view) -> {
@@ -87,7 +86,7 @@ public class RecorderActivity extends AppCompatActivity {
             btnMagic = (Button)findViewById(R.id.magicButton);
             btnMagic.setOnClickListener((view) -> {
                 Toast.makeText(RecorderActivity.this,"MAGIC", Toast.LENGTH_SHORT).show();
-                recorder1.magic();
+                Magic.magic(recorder1.getName(), recorder2.getName());
             });
         } else {
             requestPermission();
