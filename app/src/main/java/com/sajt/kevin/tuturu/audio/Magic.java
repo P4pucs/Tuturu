@@ -2,6 +2,7 @@ package com.sajt.kevin.tuturu.audio;
 
 import android.os.Environment;
 
+import com.sajt.kevin.tuturu.math.DSP;
 import com.sajt.kevin.tuturu.math.DSPC;
 import com.sajt.kevin.tuturu.math.FFT;
 
@@ -59,14 +60,26 @@ public class Magic {
 
         long startTime = System.currentTimeMillis();
 
-        double[] signal1 = compressor(FFT.fftMagnitude(hamming(nextPowOfTwo(DSPC.todouble(readAudioFile(audio1))))), 10);
-        double[] signal2 = compressor(FFT.fftMagnitude(hamming(nextPowOfTwo(DSPC.todouble(readAudioFile(audio2))))), 30);
-        double[] xcorr = DSPC.xcorr(signal1, signal2);
+        double[] signal1 = DSP.compute(FFT.fftMagnitude(nextPowOfTwo(hamming(DSPC.todouble(readAudioFile(audio1))))));
+        double[] signal2 = DSP.compute(FFT.fftMagnitude(nextPowOfTwo(hamming(DSPC.todouble(readAudioFile(audio2))))));
+        //double[] xcorr = DSPC.xcorr(signal1, signal2);
+
+        double mse = DSP.MSE(signal1, signal2, signal1.length);
+
 
         long stopTime = System.currentTimeMillis();
         long elapsedTime = stopTime - startTime;
 
-        System.out.println("max: " + DSPC.max(xcorr) + " min: " + DSPC.min(xcorr) + " elapsed time: " + elapsedTime);
+        //System.out.println("max: " + DSPC.max(xcorr) + " min: " + DSPC.min(xcorr) + " elapsed time: " + elapsedTime);
+
+        for (double asd : signal1) {
+            System.out.println("signal1: " + asd);
+        }
+
+        for (double dsa : signal2) {
+            System.out.println("signal2: " + dsa);
+        }
+        System.out.println("MSE: " + mse );
     }
 
     // converts byte array to double array
