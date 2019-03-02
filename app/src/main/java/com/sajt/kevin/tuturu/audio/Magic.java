@@ -2,9 +2,10 @@ package com.sajt.kevin.tuturu.audio;
 
 import android.os.Environment;
 
-import com.sajt.kevin.tuturu.math.DSP;
+import com.sajt.kevin.tuturu.math.DSP.FourierTransform;
+import com.sajt.kevin.tuturu.math.DSP.MFCC;
+import com.sajt.kevin.tuturu.math.DSP.Utilities;
 import com.sajt.kevin.tuturu.math.DSPC;
-import com.sajt.kevin.tuturu.math.FFT;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,66 +25,35 @@ public class Magic {
 //            double[] signal2 = compressor(FFT.fftMagnitude(nextPowOfTwo(DSPC.todouble(readAudioFile(audio2)))), 10);
 //            System.out.println("DONE 2222222222" + " size: " + signal2.length);
 //        }).start();
-//        double[] sajt1 = FFT.fftMagnitude(nextPowOfTwo(DSPC.todouble(readAudioFile(audio1))));
-//        double[] sajt2 = FFT.fftMagnitude(nextPowOfTwo(DSPC.todouble(readAudioFile(audio2))));
-
-
-//        int sajt = 5000;
 //
-//        double[] sajt3 = new double[sajt];
-//        double[] sajt4 = new double[sajt];
-//        for (int i=0;i<sajt;i++) {
-//            sajt3[i] = sajt1[i];
-//            sajt4[i] = sajt2[i];
-//        }
-//
-//        double[] krumpli = DSPC.xcorr(sajt3, sajt4);
-////            for (double asd : krumpli) {
-////                System.out.println("krumplisteszta: " + asd);
-////            }
-//
-//            double max = DSPC.max(krumpli);
-//            double min = DSPC.min(krumpli);
-//            System.out.println("krumplisteszta MAX: " + max);
-//            System.out.println("krumplisteszta min: " + min);
-
-//        Thread thread = new Thread(() -> {
-//            System.out.println("krumplisteszta thread started");
-//            double[] alma = DSPC.xcorr(sajt1, sajt2);
-//
-//            for (double krumpli : alma) {
-//                System.out.println("krumplisteszta: " + krumpli);
-//            }
-//        });
 //        thread.start();
 
-
         long startTime = System.currentTimeMillis();
+//        DSP_old.mfcc(FFT.fftMagnitude(nextPowOfTwo(hamming(filter(DSPC.todouble(readAudioFile(audio2)))))));
+        double[] signal1 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hamming(DSPC.todouble(readAudioFile(audio1))))));
+        double[] signal2 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hamming(DSPC.todouble(readAudioFile(audio2))))));
+        //double[] xcorr = DSPC.xcorr(signal1, signal2);
 
-        double[] signal1 = DSP.mfcc(FFT.fftMagnitude(nextPowOfTwo(hamming(filter(DSPC.todouble(readAudioFile(audio1)))))));
-        double[] signal2 = DSP.mfcc(FFT.fftMagnitude(nextPowOfTwo(hamming(filter(DSPC.todouble(readAudioFile(audio2)))))));
-        double[] xcorr = DSPC.xcorr(signal1, signal2);
-
-        //double mse = DSP.MSE(signal1, signal2, signal1.length);
+        double mse = Utilities.MSE(signal1, signal2, signal1.length);
 
 
-        long stopTime = System.currentTimeMillis();
-        long elapsedTime = stopTime - startTime;
+//        long stopTime = System.currentTimeMillis();
+//        long elapsedTime = stopTime - startTime;
 
-        System.out.println("max: " + DSPC.max(xcorr) + " min: " + DSPC.min(xcorr) + " elapsed time: " + elapsedTime);
 
-        for (double asd : signal1) {
-            System.out.println("signal1: " + asd);
-        }
+//        for (double asd : signal1) {
+//            System.out.println("signal1: " + asd);
+//        }
+//
+//        for (double dsa : signal2) {
+//            System.out.println("signal2: " + dsa);
+//        }
 
-        for (double dsa : signal2) {
-            System.out.println("signal2: " + dsa);
-        }
-
-        for (double qwe : xcorr) {
-            System.out.println("xcorr: " + qwe);
-        }
-        //System.out.println("MSE: " + mse );
+//        for (double qwe : xcorr) {
+//            System.out.println("xcorr: " + qwe);
+//        }
+        //System.out.println("max: " + DSPC.max(xcorr) + " min: " + DSPC.min(xcorr) + " elapsed time: " + elapsedTime);
+        System.out.println("MSE: " + mse );
     }
 
     // converts byte array to double array

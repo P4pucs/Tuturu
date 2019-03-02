@@ -14,16 +14,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-
 public class Recorder {
     private String name;
 
     private static String TAG = "VoiceRecord";
 
-    private static final int RECORDER_SAMPLE_RATE = 44100;
+    private static final int RECORDER_SAMPLE_RATE = 16000; //original: 44100
     private static final int RECORDER_CHANNELS_IN = AudioFormat.CHANNEL_IN_MONO;
     private static final int RECORDER_CHANNELS_OUT = AudioFormat.CHANNEL_OUT_MONO;
-    private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
+    private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_8BIT;//original: ENCODING_PCM_16BIT
 
     private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
 
