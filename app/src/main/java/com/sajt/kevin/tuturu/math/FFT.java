@@ -35,7 +35,7 @@ public class FFT {
         return x;
     }
 
-    // compute the FFT of x[], assuming its length is a power of 2
+    // mfcc the FFT of x[], assuming its length is a power of 2
     public static Complex[] fft(Complex[] x) {
         int n = x.length;
 
@@ -73,7 +73,7 @@ public class FFT {
         return y;
     }
 
-    // compute the inverse FFT of x[], assuming its length is a power of 2
+    // mfcc the inverse FFT of x[], assuming its length is a power of 2
     public static Complex[] ifft(Complex[] x) {
         int N = x.length;
         Complex[] y = new Complex[N];
@@ -83,7 +83,7 @@ public class FFT {
             y[i] = x[i].conjugate();
         }
 
-        // compute forward FFT
+        // mfcc forward FFT
         y = fft(y);
 
         // take conjugate again
@@ -100,7 +100,7 @@ public class FFT {
 
     }
 
-    // compute the circular convolution of x and y
+    // mfcc the circular convolution of x and y
     public static Complex[] cconvolve(Complex[] x, Complex[] y) {
 
         // should probably pad x and y with 0s so that they have same length
@@ -111,7 +111,7 @@ public class FFT {
 
         int N = x.length;
 
-        // compute FFT of each sequence
+        // mfcc FFT of each sequence
         Complex[] a = fft(x);
         Complex[] b = fft(y);
 
@@ -121,11 +121,11 @@ public class FFT {
             c[i] = a[i].times(b[i]);
         }
 
-        // compute inverse FFT
+        // mfcc inverse FFT
         return ifft(c);
     }
 
-    // compute the linear convolution of x and y
+    // mfcc the linear convolution of x and y
     public static Complex[] convolve(Complex[] x, Complex[] y) {
         Complex ZERO = new Complex(0, 0);
 

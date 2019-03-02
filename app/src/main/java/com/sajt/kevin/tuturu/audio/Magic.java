@@ -60,17 +60,17 @@ public class Magic {
 
         long startTime = System.currentTimeMillis();
 
-        double[] signal1 = DSP.compute(FFT.fftMagnitude(nextPowOfTwo(hamming(DSPC.todouble(readAudioFile(audio1))))));
-        double[] signal2 = DSP.compute(FFT.fftMagnitude(nextPowOfTwo(hamming(DSPC.todouble(readAudioFile(audio2))))));
-        //double[] xcorr = DSPC.xcorr(signal1, signal2);
+        double[] signal1 = DSP.mfcc(FFT.fftMagnitude(nextPowOfTwo(hamming(filter(DSPC.todouble(readAudioFile(audio1)))))));
+        double[] signal2 = DSP.mfcc(FFT.fftMagnitude(nextPowOfTwo(hamming(filter(DSPC.todouble(readAudioFile(audio2)))))));
+        double[] xcorr = DSPC.xcorr(signal1, signal2);
 
-        double mse = DSP.MSE(signal1, signal2, signal1.length);
+        //double mse = DSP.MSE(signal1, signal2, signal1.length);
 
 
         long stopTime = System.currentTimeMillis();
         long elapsedTime = stopTime - startTime;
 
-        //System.out.println("max: " + DSPC.max(xcorr) + " min: " + DSPC.min(xcorr) + " elapsed time: " + elapsedTime);
+        System.out.println("max: " + DSPC.max(xcorr) + " min: " + DSPC.min(xcorr) + " elapsed time: " + elapsedTime);
 
         for (double asd : signal1) {
             System.out.println("signal1: " + asd);
@@ -79,7 +79,11 @@ public class Magic {
         for (double dsa : signal2) {
             System.out.println("signal2: " + dsa);
         }
-        System.out.println("MSE: " + mse );
+
+        for (double qwe : xcorr) {
+            System.out.println("xcorr: " + qwe);
+        }
+        //System.out.println("MSE: " + mse );
     }
 
     // converts byte array to double array
@@ -112,6 +116,15 @@ public class Magic {
 //        }
 //        return magicYs;
         return Ys;
+    }
+
+    private static double[]filter(double[] signal) {
+        double[] magicYs = new double[signal.length];
+        for (int i=0; i<magicYs.length-1; i++)
+        {
+            magicYs[i] = signal[i+1] - 0.95 * signal[i];
+        }
+        return magicYs;
     }
 
     // reads raw audio file into byte array

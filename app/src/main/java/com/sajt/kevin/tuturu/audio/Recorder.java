@@ -208,7 +208,7 @@ public class Recorder {
 //            System.out.println("spectrum: " + aspectrum);
 //        }
 
-//        double[] mel = compute(spectrum);
+//        double[] mel = mfcc(spectrum);
 //
 //        double[] melToCompare = new double[]{19.34483364510596, 3.3787166652097866, 0.0,
 //                2.8131725546904125, -3.3138048183040627E-16, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};

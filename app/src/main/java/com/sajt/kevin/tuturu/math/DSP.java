@@ -152,7 +152,7 @@ public class DSP {
         return rev;
     }
 
-    public static double[] compute(double[] signal) {
+    public static double[] mfcc(double[] signal) {
 
         double[] result = new double[melWorkingFrequencies.length];
         double[] mfcc = new double[melWorkingFrequencies.length];
