@@ -19,9 +19,9 @@ public class Recorder {
 
     private static String TAG = "VoiceRecord";
 
-    private static final int RECORDER_SAMPLE_RATE = 16000; //original: 44100
-    private static final int RECORDER_CHANNELS_IN = AudioFormat.CHANNEL_IN_MONO;
-    private static final int RECORDER_CHANNELS_OUT = AudioFormat.CHANNEL_OUT_MONO;
+    private static final int RECORDER_SAMPLE_RATE = 8000; //original: 44100
+    private static final int RECORDER_CHANNELS_IN = AudioFormat.CHANNEL_IN_MONO; //CHANNEL_IN_DEFAULT
+    private static final int RECORDER_CHANNELS_OUT = AudioFormat.CHANNEL_OUT_MONO; //CHANNEL_OUT_DEFAULT
     private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_8BIT;//original: ENCODING_PCM_16BIT
 
     private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
@@ -136,96 +136,6 @@ public class Recorder {
             Log.d(TAG, "audio track is not initialised ");
     }
 
-//    public static double[] toDoubleArray(byte[] byteArray){
-//        int SAMPLE_RESOLUTION = 16;
-//        int BYTES_PER_POINT = SAMPLE_RESOLUTION / 8;
-//        int[] vals = new int[byteArray.length/BYTES_PER_POINT];
-//        double[] Ys = new double[byteArray.length / BYTES_PER_POINT];
-//        //double[] Xs = new double[byteArray.length / BYTES_PER_POINT];
-//        //double[] Xs2 = new double[byteArray.length / BYTES_PER_POINT];
-//        byte hByte;
-//        byte lByte;
-//
-//        for (int i=0; i<vals.length; i++)
-//        {
-//            // bit shift the byte buffer into the right variable format
-//            hByte = byteArray[i * 2 + 1];
-//            lByte = byteArray[i * 2 + 0];
-//            vals[i] = (int)(short)((hByte << 8) | lByte);
-//            //Xs[i] = i;
-//            Ys[i] = vals[i];
-//            //Xs2[i] = (double)i/Ys.length*RECORDER_SAMPLE_RATE/1000.0; // units are in kHz
-//        }
-//
-//        //signal filtering
-//        double[] magicYs = new double[Ys.length];
-//        for (int i=0; i<magicYs.length-1; i++)
-//        {
-//            magicYs[i] = Ys[i+1] - 0.95 * Ys[i];
-//        }
-//        return magicYs;
-////        return Ys;
-//    }
-
-//    public void magic() {
-//
-//        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + Name + ".pcm");
-//        byte[] byteData = new byte[(int) file.length()];
-//
-//        try {
-//            FileInputStream in = new FileInputStream(file);
-//            in.read(byteData);
-//            in.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        int nexpowtwo = 1;
-//        double[] src = toDoubleArray(byteData);
-//        while (true) {
-//            if (src.length < nexpowtwo) {
-//                break;
-//            } else {
-//                nexpowtwo *= 2;
-//            }
-//        }
-//
-//        double[] sampleBuffer = new double[nexpowtwo];
-//
-//        for (int i =0;i<src.length;i++) {
-//            sampleBuffer[i] = src[i];
-//        }
-//
-//
-//        double[] spectrum = FFT.fftMagnitude(sampleBuffer);//Spectrum(sampleBuffer);
-
-
-
-//        for(double aspectrum : spectrum) {
-//            System.out.println("spectrum: " + aspectrum);
-//        }
-
-//        double[] mel = mfcc(spectrum);
-//
-//        double[] melToCompare = new double[]{19.34483364510596, 3.3787166652097866, 0.0,
-//                2.8131725546904125, -3.3138048183040627E-16, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-//
-//        for(double mels : mel) {
-//            System.out.println("mel: " + mels);
-//        }
-//
-//        for(double melsCmp : melToCompare) {
-//            System.out.println("melsCmp: " + melsCmp);
-//        }
-//
-//        double mse = MSE(melToCompare, mel, melToCompare.length);
-//
-//        System.out.println("mellength: " + mel.length + " meltocmp lenght: " + melToCompare.length);
-//        System.out.println("mse: " + mse);
-
-//    }
 }
 
 

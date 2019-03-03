@@ -106,7 +106,7 @@ public class FourierTransform {
         int i, j, k, n;
         int BlockSize, BlockEnd;
 
-        double angle_numerator = 2.0 * Utilities.DDC_PI;
+        double angle_numerator = 2.0 * Math.PI;
         double tr, ti;     /* temp real, temp imaginary */
 
         if (pRealIn == null || pRealOut == null || pImagOut == null)

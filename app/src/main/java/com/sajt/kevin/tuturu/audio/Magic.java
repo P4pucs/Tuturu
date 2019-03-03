@@ -2,10 +2,10 @@ package com.sajt.kevin.tuturu.audio;
 
 import android.os.Environment;
 
+import com.sajt.kevin.tuturu.math.DSP.Filters;
 import com.sajt.kevin.tuturu.math.DSP.FourierTransform;
 import com.sajt.kevin.tuturu.math.DSP.MFCC;
 import com.sajt.kevin.tuturu.math.DSP.Utilities;
-import com.sajt.kevin.tuturu.math.DSPC;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,46 +14,32 @@ import java.io.IOException;
 
 public class Magic {
 
-    public static void magic(String audio1, String audio2) {
+    public static boolean magic(String audio1, String audio2) {
 // threading for later
 //        new Thread(() -> {
-//            double[] signal1 = compressor(FFT.fftMagnitude(nextPowOfTwo(DSPC.todouble(readAudioFile(audio1)))), 10);
+//            double[] signal1 = compressor(FFT.fftMagnitude(nextPowOfTwo(Corr.toDouble(readAudioFile(audio1)))), 10);
 //            System.out.println("DONE 1111111111" + " size: " + signal1.length);
 //        }).start();
 //
 //        new Thread(() -> {
-//            double[] signal2 = compressor(FFT.fftMagnitude(nextPowOfTwo(DSPC.todouble(readAudioFile(audio2)))), 10);
+//            double[] signal2 = compressor(FFT.fftMagnitude(nextPowOfTwo(Corr.toDouble(readAudioFile(audio2)))), 10);
 //            System.out.println("DONE 2222222222" + " size: " + signal2.length);
 //        }).start();
 //
-//        thread.start();
+//        thread.start();//0.019919727065442257
 
-        long startTime = System.currentTimeMillis();
-//        DSP_old.mfcc(FFT.fftMagnitude(nextPowOfTwo(hamming(filter(DSPC.todouble(readAudioFile(audio2)))))));
-        double[] signal1 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hamming(DSPC.todouble(readAudioFile(audio1))))));
-        double[] signal2 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hamming(DSPC.todouble(readAudioFile(audio2))))));
-        //double[] xcorr = DSPC.xcorr(signal1, signal2);
+        double[] signal1 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hamming(toDouble(readAudioFile(audio1))))));
+        double[] signal2 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hamming(toDouble(readAudioFile(audio2))))));
 
         double mse = Utilities.MSE(signal1, signal2, signal1.length);
 
-
-//        long stopTime = System.currentTimeMillis();
-//        long elapsedTime = stopTime - startTime;
-
-
-//        for (double asd : signal1) {
-//            System.out.println("signal1: " + asd);
-//        }
-//
-//        for (double dsa : signal2) {
-//            System.out.println("signal2: " + dsa);
-//        }
-
-//        for (double qwe : xcorr) {
-//            System.out.println("xcorr: " + qwe);
-//        }
-        //System.out.println("max: " + DSPC.max(xcorr) + " min: " + DSPC.min(xcorr) + " elapsed time: " + elapsedTime);
         System.out.println("MSE: " + mse );
+
+        if (mse <= 0.03) { //0.009045041910
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // converts byte array to double array
@@ -62,8 +48,8 @@ public class Magic {
         int BYTES_PER_POINT = SAMPLE_RESOLUTION / 8;
         int[] vals = new int[byteArray.length/BYTES_PER_POINT];
         double[] Ys = new double[byteArray.length / BYTES_PER_POINT];
-        //double[] Xs = new double[byteArray.length / BYTES_PER_POINT];
-        //double[] Xs2 = new double[byteArray.length / BYTES_PER_POINT];
+        double[] Xs = new double[byteArray.length / BYTES_PER_POINT];
+        double[] Xs2 = new double[byteArray.length / BYTES_PER_POINT];
         byte hByte;
         byte lByte;
 
@@ -73,28 +59,12 @@ public class Magic {
             hByte = byteArray[i * 2 + 1];
             lByte = byteArray[i * 2 + 0];
             vals[i] = (int)(short)((hByte << 8) | lByte);
-            //Xs[i] = i;
+            Xs[i] = i;
             Ys[i] = vals[i];
-            //Xs2[i] = (double)i/Ys.length*RECORDER_SAMPLE_RATE/1000.0; // units are in kHz
+            Xs2[i] = (double)i/Ys.length*44100/1000.0; // units are in kHz
         }
 
-        //signal filtering
-//        double[] magicYs = new double[Ys.length];
-//        for (int i=0; i<magicYs.length-1; i++)
-//        {
-//            magicYs[i] = Ys[i+1] - 0.95 * Ys[i];
-//        }
-//        return magicYs;
         return Ys;
-    }
-
-    private static double[]filter(double[] signal) {
-        double[] magicYs = new double[signal.length];
-        for (int i=0; i<magicYs.length-1; i++)
-        {
-            magicYs[i] = signal[i+1] - 0.95 * signal[i];
-        }
-        return magicYs;
     }
 
     // reads raw audio file into byte array
@@ -112,6 +82,16 @@ public class Magic {
             e.printStackTrace();
         }
         return byteData;
+    }
+
+    public static double[] toDouble(byte[] a)
+    {
+        double[] y = new double[a.length];
+
+        for(int x = 0; x < y.length; x++)
+            y[x] = (double)a[x];
+
+        return y;
     }
 
     private static double[] nextPowOfTwo(double[] array) {
@@ -141,15 +121,6 @@ public class Magic {
             array[array.length - i - 1] = temp;
         }
         return array;
-    }
-
-    private static double[] compressor(double[] array, int ratio) {
-        double[] newArray = new double[array.length/ratio];
-        int index = 0;
-        for (int i=0;i<array.length;i+=ratio) {
-            newArray[index] = array[i];
-        }
-        return newArray;
     }
 
     private static double[] hamming(double[] signal) {

@@ -33,7 +33,7 @@ import java.util.Arrays;
  *
  * @author Ron Weiss (ronw@ee.columbia.edu)
  */
-public class DSPC
+public class Corr
 {
     /**
      * Convolves sequences a and b.  The resulting convolution has
@@ -1121,13 +1121,13 @@ public class DSPC
         if(cmd.equals("conv") || cmd.equals("xcorr"))
         {
             if(cmd.equals("conv"))
-                y = DSPC.conv(a,b);
+                y = Corr.conv(a,b);
             else
             {
                 if(args.length == 1)
-                    y = DSPC.xcorr(b, a);
+                    y = Corr.xcorr(b, a);
                 else
-                    y = DSPC.xcorr(b, a, Integer.parseInt(args[1]));
+                    y = Corr.xcorr(b, a, Integer.parseInt(args[1]));
 
                 System.out.print("xcorr(b,a) = ");
                 for(int x = 0; x < y.length; x++)
@@ -1135,9 +1135,9 @@ public class DSPC
                 System.out.println("");
 
                 if(args.length == 1)
-                    y = DSPC.xcorr(a,b);
+                    y = Corr.xcorr(a,b);
                 else
-                    y = DSPC.xcorr(a,b, Integer.parseInt(args[1]));
+                    y = Corr.xcorr(a,b, Integer.parseInt(args[1]));
 
                 System.out.print("xcorr(a,b) = ");
             }
@@ -1146,16 +1146,16 @@ public class DSPC
         {
             //double[] b = {1, -1};
             //double[] a = {1, -.99};
-            double[] x = DSPC.hanning(20);
+            double[] x = Corr.hanning(20);
 
-            y = DSPC.filter(b,a,x);
+            y = Corr.filter(b,a,x);
         }
         else if(cmd.equals("hanning"))
         {
             if(args.length > 1)
                 n = Integer.parseInt(args[1]);
 
-            y = DSPC.hanning(n);
+            y = Corr.hanning(n);
         }
 
         for(int x = 0; x < y.length; x++)

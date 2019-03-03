@@ -86,8 +86,13 @@ public class RecorderActivity extends AppCompatActivity {
             // MAGIC
             btnMagic = (Button)findViewById(R.id.magicButton);
             btnMagic.setOnClickListener((view) -> {
-                Toast.makeText(RecorderActivity.this,"MAGIC", Toast.LENGTH_SHORT).show();
-                Magic.magic(recorder1.getName(), recorder2.getName());
+                //Toast.makeText(RecorderActivity.this,"MAGIC", Toast.LENGTH_SHORT).show();
+                //Magic.magic(recorder1.getName(), recorder2.getName());
+                if (Magic.magic(recorder1.getName(), recorder2.getName())) {
+                    Toast.makeText(RecorderActivity.this,"GOOD", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(RecorderActivity.this,"NOT GOOD", Toast.LENGTH_SHORT).show();
+                }
             });
         } else {
             requestPermission();
