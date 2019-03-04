@@ -13,6 +13,11 @@ import android.widget.Toast;
 import com.sajt.kevin.tuturu.audio.Magic;
 import com.sajt.kevin.tuturu.audio.Recorder;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class RecorderActivity extends AppCompatActivity {
 
 
@@ -22,7 +27,9 @@ public class RecorderActivity extends AppCompatActivity {
     private static Button btnRecord1, btnStopRecord1, btnPlay1;
     private static Button btnRecord2, btnStopRecord2, btnPlay2;
     private static Button btnMagic;
-
+    private static Button btnLinkStart;
+    private boolean alreadyExecuted = false;
+    private Thread linkStartThread = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +101,58 @@ public class RecorderActivity extends AppCompatActivity {
                     Toast.makeText(RecorderActivity.this,"NOT GOOD", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            //LINK START
+            Recorder recorder = new Recorder("loooop");
+            Runnable linkStart = new Runnable() {
+                public void run() {
+                    System.out.println("Hello world");
+                }
+            };
+            ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+
+            linkStartThread = new Thread(() -> {
+                executor.scheduleAtFixedRate(linkStart, 0, (long) 1.5, TimeUnit.SECONDS);
+                alreadyExecuted = true;
+            });
+
+            btnLinkStart = (Button)findViewById(R.id.linkStartButton);
+            btnLinkStart.setTag(1);
+            btnLinkStart.setOnClickListener((view) -> {
+
+                if (alreadyExecuted) {
+                    final int status =(Integer) view.getTag();
+                    if(status == 1) {
+                        btnLinkStart.setText("Link Stop");
+                        synchronized (linkStartThread) {
+                            try {
+                                linkStartThread.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        view.setTag(0); //pause
+                    } else {
+                        synchronized (linkStartThread) {
+                            try {
+                                linkStartThread.notifyAll();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        btnLinkStart.setText("Link Start");
+                        view.setTag(1); //pause
+                    }
+                }else {
+                    try {
+                        linkStartThread.start();
+                        btnLinkStart.setText("Link Stop");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
         } else {
             requestPermission();
         }

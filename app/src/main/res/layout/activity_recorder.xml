@@ -71,7 +71,18 @@
         android:layout_width="115dp"
         android:layout_height="72dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="112dp"
+        android:layout_marginBottom="144dp"
+        android:layout_toEndOf="@+id/recorder1Button"
         android:text="Magic" />
+
+    <Button
+        android:id="@+id/linkStartButton"
+        android:layout_width="148dp"
+        android:layout_height="62dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="115dp"
+        android:layout_marginBottom="70dp"
+        android:text="Link Start" />
+
 </RelativeLayout>
