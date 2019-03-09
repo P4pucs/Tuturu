@@ -1,11 +1,10 @@
 package com.sajt.kevin.tuturu.math.DSP;
 
 public class Utilities {
-    public static Double DDC_PI = 3.14159265358979323846;
 
     public static double MSE(double[] signal_1, double[] signal_2, int SizeToCompare)
     {
-        double result = 0;
+        double result = 0.0;
 
         if (signal_1.length < SizeToCompare) return -1;
         if (signal_2.length < SizeToCompare) return -1;

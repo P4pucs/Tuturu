@@ -13,22 +13,28 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class Recorder {
     private String name;
 
     private static String TAG = "VoiceRecord";
 
-    private static final int RECORDER_SAMPLE_RATE = 8000; //original: 44100
-    private static final int RECORDER_CHANNELS_IN = AudioFormat.CHANNEL_IN_MONO; //CHANNEL_IN_DEFAULT
-    private static final int RECORDER_CHANNELS_OUT = AudioFormat.CHANNEL_OUT_MONO; //CHANNEL_OUT_DEFAULT
-    private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_8BIT;//original: ENCODING_PCM_16BIT
+    private static final int RECORDER_SAMPLE_RATE = 8000;
+    private static final int RECORDER_CHANNELS_IN = AudioFormat.CHANNEL_IN_MONO;
+    private static final int RECORDER_CHANNELS_OUT = AudioFormat.CHANNEL_OUT_MONO;
+    private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
 
     private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
 
     private AudioRecord recorder = null;
     private Thread recordingThread = null;
     private boolean isRecording = false;
+
+    private boolean autoIsRecording = false;
+
 
     // Initialize minimum buffer size in bytes.
     private int bufferSize = AudioRecord.getMinBufferSize(RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_IN, RECORDER_AUDIO_ENCODING);
@@ -105,35 +111,83 @@ public class Recorder {
         }
     }
 
-    public void PlayShortAudioFileViaAudioTrack(String filePath) throws IOException{
-        if (filePath==null)
-            return;
-
+    public void PlayShortAudioFileViaAudioTrack(String filePath) throws IOException {
         //Reading the file..
-        File file = new File(filePath);
-        byte[] byteData = new byte[(int) file.length()];
-
-        FileInputStream in;
         try {
-            in = new FileInputStream( file );
-            in.read( byteData );
-            in.close();
+            File file = new File(filePath);
+            byte[] byteData = new byte[(int) file.length()];
+
+            FileInputStream in;
+            try {
+                in = new FileInputStream(file);
+                in.read(byteData);
+                in.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            // Set and push to audio track..
+            int intSize = android.media.AudioTrack.getMinBufferSize(RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_OUT, RECORDER_AUDIO_ENCODING);
+
+            AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_OUT, RECORDER_AUDIO_ENCODING, intSize, AudioTrack.MODE_STREAM);
+
+            if (at != null) {
+                at.play();
+                // Write the byte array to the track
+                at.write(byteData, 0, byteData.length);
+                at.stop();
+                at.release();
+            } else
+                Log.d(TAG, "audio track is not initialised ");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void startRecordForX() {
+        // Initialize Audio Recorder.
+        recorder = new AudioRecord(AUDIO_SOURCE, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_IN, RECORDER_AUDIO_ENCODING, bufferSize);
+        // Starts recording from the AudioRecord instance.
+        recorder.startRecording();
+
+        recordingThread = new Thread(this::recordForX, "AudioRecorder Thread");
+        recordingThread.start();
+    }
+
+    public void recordForX() {
+        //Write the output audio in byte
+        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + getName() + ".pcm";
+        byte audioBuffer[] = new byte[bufferSize];
+
+        FileOutputStream os = null;
+        try {
+            os = new FileOutputStream(filePath);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        // Set and push to audio track..
-        int intSize = android.media.AudioTrack.getMinBufferSize(RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_OUT, RECORDER_AUDIO_ENCODING);
 
-        AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_OUT, RECORDER_AUDIO_ENCODING, intSize, AudioTrack.MODE_STREAM);
-        if (at!=null) {
-            at.play();
-            // Write the byte array to the track
-            at.write(byteData, 0, byteData.length);
-            at.stop();
-            at.release();
+        long endTime = System.nanoTime() + TimeUnit.NANOSECONDS.convert((long) 2, TimeUnit.SECONDS);
+        while ( System.nanoTime() < endTime ){
+            // gets the voice output from microphone to byte format
+            recorder.read(audioBuffer, 0, bufferSize);
+            try {
+                //  writes the data to file from buffer stores the voice buffer
+                os.write(audioBuffer, 0, bufferSize);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        else
-            Log.d(TAG, "audio track is not initialised ");
+        try {
+            recorder.stop();
+            recorder.release();
+            recorder = null;
+            recordingThread = null;
+            os.close();
+            System.out.println("recoder DONE");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

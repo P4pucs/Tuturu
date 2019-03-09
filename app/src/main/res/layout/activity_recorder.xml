@@ -7,16 +7,6 @@
     tools:context=".RecorderActivity">
 
     <Button
-        android:id="@+id/stopRecorder2Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/play1Button"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="189dp"
-        android:layout_marginTop="151dp"
-        android:text="Stop2" />
-
-    <Button
         android:id="@+id/recorder2Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,23 +27,15 @@
         android:text="record1" />
 
     <Button
-        android:id="@+id/stopRecorder1Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/play1Button"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="-2dp"
-        android:layout_marginTop="153dp"
-        android:text="Stop1" />
-
-    <Button
         android:id="@+id/play1Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/recorder1Button"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="1dp"
-        android:layout_marginBottom="234dp"
+        android:layout_alignBottom="@+id/play1Button"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="43dp"
+        android:layout_marginTop="164dp"
+        android:layout_marginBottom="0dp"
         android:text="Play1" />
 
     <Button
@@ -61,28 +43,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/play1Button"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="188dp"
-        android:layout_marginBottom="233dp"
+        android:layout_alignBottom="@+id/play2Button"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="194dp"
+        android:layout_marginTop="166dp"
+        android:layout_marginBottom="0dp"
         android:text="Play2" />
 
     <Button
-        android:id="@+id/magicButton"
+        android:id="@+id/alchemyButton"
         android:layout_width="115dp"
         android:layout_height="72dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="144dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="232dp"
         android:layout_toEndOf="@+id/recorder1Button"
-        android:text="Magic" />
+        android:text="Alchemy" />
 
     <Button
         android:id="@+id/linkStartButton"
         android:layout_width="148dp"
         android:layout_height="62dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="115dp"
-        android:layout_marginBottom="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="121dp"
+        android:layout_marginTop="333dp"
         android:text="Link Start" />
 
 </RelativeLayout>
