@@ -2,9 +2,11 @@ package com.sajt.kevin.tuturu.audio;
 
 import android.os.Environment;
 
+import com.sajt.kevin.tuturu.math.DSP.Filters;
 import com.sajt.kevin.tuturu.math.DSP.FourierTransform;
 import com.sajt.kevin.tuturu.math.DSP.MFCC;
 import com.sajt.kevin.tuturu.math.DSP.Utilities;
+import com.sajt.kevin.tuturu.math.FFT;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -15,19 +17,18 @@ import java.io.IOException;
 
 public class Alchemy {
 
-    private static double threshold = 0.02;
+    private static double threshold = 0.5;
 
     public static boolean alchemy(String audio1, String audio2) {
 
-        double[] signal1 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hamming(toDoubleArray(readAudioFile(audio1))))));
-        double[] signal2 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hamming(toDoubleArray(readAudioFile(audio2))))));
+        double[] signal1 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hanning(toDouble(readAudioFile(audio1))))));
+        double[] signal2 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hanning(toDouble(readAudioFile(audio2))))));
 
         double mse = Utilities.MSE(signal1, signal2, signal1.length);
 
         for (double asd : signal1) {
             System.out.println("signal 1 : " + asd);
         }
-
 
         for (double dsa : signal2) {
             System.out.println("signal 2 : " + dsa);
@@ -151,6 +152,16 @@ public class Alchemy {
             newSignal[samples+ i] = 0.54 + 0.46 * Math.cos(i * r);
         }
 
+        return newSignal;
+    }
+
+    private static double[] hanning(double[] signal) {
+
+        double[] newSignal = new double[signal.length];
+        for (int i = 0; i < signal.length; i++) {
+            double multiplier = 0.5 * (1 - Math.cos(2*Math.PI*i/signal.length-1));
+            newSignal[i] = multiplier * signal[i];
+        }
         return newSignal;
     }
 

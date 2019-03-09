@@ -22,10 +22,10 @@ public class Recorder {
 
     private static String TAG = "VoiceRecord";
 
-    private static final int RECORDER_SAMPLE_RATE = 8000;
+    private static final int RECORDER_SAMPLE_RATE = 16000;
     private static final int RECORDER_CHANNELS_IN = AudioFormat.CHANNEL_IN_MONO;
     private static final int RECORDER_CHANNELS_OUT = AudioFormat.CHANNEL_OUT_MONO;
-    private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
+    private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_8BIT;
 
     private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
 
@@ -168,6 +168,51 @@ public class Recorder {
         }
 
         long endTime = System.nanoTime() + TimeUnit.NANOSECONDS.convert((long) 2, TimeUnit.SECONDS);
+        while ( System.nanoTime() < endTime ){
+            // gets the voice output from microphone to byte format
+            recorder.read(audioBuffer, 0, bufferSize);
+            try {
+                //  writes the data to file from buffer stores the voice buffer
+                os.write(audioBuffer, 0, bufferSize);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            recorder.stop();
+            recorder.release();
+            recorder = null;
+            recordingThread = null;
+            os.close();
+            System.out.println("recoder DONE");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void startRecordSample() {
+        // Initialize Audio Recorder.
+        recorder = new AudioRecord(AUDIO_SOURCE, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_IN, RECORDER_AUDIO_ENCODING, bufferSize);
+        // Starts recording from the AudioRecord instance.
+        recorder.startRecording();
+
+        recordingThread = new Thread(this::recordSample, "AudioRecorder Thread");
+        recordingThread.start();
+    }
+
+    public void recordSample() {
+        //Write the output audio in byte
+        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + getName() + ".pcm";
+        byte audioBuffer[] = new byte[bufferSize];
+
+        FileOutputStream os = null;
+        try {
+            os = new FileOutputStream(filePath);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        long endTime = System.nanoTime() + TimeUnit.NANOSECONDS.convert((long) 1.5, TimeUnit.SECONDS);
         while ( System.nanoTime() < endTime ){
             // gets the voice output from microphone to byte format
             recorder.read(audioBuffer, 0, bufferSize);

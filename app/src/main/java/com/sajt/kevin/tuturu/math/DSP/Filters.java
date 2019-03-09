@@ -12,7 +12,7 @@ public class Filters {
 
         for (int i = 1; i < signal.length; i++)
         {
-            result[i] = signal[i] - 0.95 * signal[i - 1];
+            result[i] = signal[i] - 0.90 * signal[i - 1]; //0.95 originally
         }
 
         return result;
