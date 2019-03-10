@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.sajt.kevin.tuturu.audio.Alchemy;
+import com.sajt.kevin.tuturu.audio.Magic;
 import com.sajt.kevin.tuturu.audio.Recorder;
 
 public class RecorderActivity extends AppCompatActivity {
@@ -18,11 +19,13 @@ public class RecorderActivity extends AppCompatActivity {
 
     final int REQUEST_PERMISSION_CODE = 1000;
 
-    private Recorder recorder1, recorder2;
+    private Recorder recorder1, recorder2, autoRecorder;
     private static Button btnRecord1, btnPlay1;
     private static Button btnRecord2, btnPlay2;
     private static Button btnAlchemy;
     private static Button btnLinkStart;
+
+    private Thread autoThread = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,7 @@ public class RecorderActivity extends AppCompatActivity {
             btnRecord1 = (Button)findViewById(R.id.recorder1Button);
             btnRecord1.setOnClickListener((view) -> {
                 recorder1.startRecordForX();
+
 
             });
 
@@ -69,25 +73,25 @@ public class RecorderActivity extends AppCompatActivity {
             });
 
             //LINK START
-            Recorder recorder = new Recorder("loooop");
+            autoRecorder = new Recorder("loooop");
+
+            autoThread = new Thread(() -> {
+                if (Alchemy.alchemy(recorder1.getName(), autoRecorder.getName())) {
+                    Toast.makeText(RecorderActivity.this,"GOOD", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(RecorderActivity.this,"NOT GOOD", Toast.LENGTH_SHORT).show();
+                }
+
+
+            });
 
             btnLinkStart = (Button)findViewById(R.id.linkStartButton);
             btnLinkStart.setOnClickListener((view) -> {
+                btnLinkStart.setText("Stop");
+                //autoThread.start();
+                Magic.getFiles();
 
-//                while (isAutoRunning) {
-//                    recorder.startRecordForX();
-//                    if (recorder.isRecordingDone()) {
-//                        if (Alchemy.alchemy(recorder1.getName(), recorder.getName())) {
-//                            Toast.makeText(RecorderActivity.this,"GOOD", Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            Toast.makeText(RecorderActivity.this,"NOT GOOD", Toast.LENGTH_SHORT).show();
-//                        }
-//                        recorder.setRecordingDone(false);
-//
-//                    }
-//                }
             });
-
 
         } else {
             requestPermission();

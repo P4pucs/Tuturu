@@ -13,8 +13,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Recorder {
@@ -33,7 +31,15 @@ public class Recorder {
     private Thread recordingThread = null;
     private boolean isRecording = false;
 
-    private boolean autoIsRecording = false;
+    private boolean autoIsRecording = true;
+
+    public boolean isAutoIsRecording() {
+        return autoIsRecording;
+    }
+
+    public void setAutoIsRecording(boolean autoIsRecording) {
+        this.autoIsRecording = autoIsRecording;
+    }
 
 
     // Initialize minimum buffer size in bytes.
@@ -150,7 +156,7 @@ public class Recorder {
         recorder = new AudioRecord(AUDIO_SOURCE, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_IN, RECORDER_AUDIO_ENCODING, bufferSize);
         // Starts recording from the AudioRecord instance.
         recorder.startRecording();
-
+        setAutoIsRecording(true);
         recordingThread = new Thread(this::recordForX, "AudioRecorder Thread");
         recordingThread.start();
     }
@@ -184,51 +190,7 @@ public class Recorder {
             recorder = null;
             recordingThread = null;
             os.close();
-            System.out.println("recoder DONE");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void startRecordSample() {
-        // Initialize Audio Recorder.
-        recorder = new AudioRecord(AUDIO_SOURCE, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_IN, RECORDER_AUDIO_ENCODING, bufferSize);
-        // Starts recording from the AudioRecord instance.
-        recorder.startRecording();
-
-        recordingThread = new Thread(this::recordSample, "AudioRecorder Thread");
-        recordingThread.start();
-    }
-
-    public void recordSample() {
-        //Write the output audio in byte
-        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + getName() + ".pcm";
-        byte audioBuffer[] = new byte[bufferSize];
-
-        FileOutputStream os = null;
-        try {
-            os = new FileOutputStream(filePath);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        long endTime = System.nanoTime() + TimeUnit.NANOSECONDS.convert((long) 1.5, TimeUnit.SECONDS);
-        while ( System.nanoTime() < endTime ){
-            // gets the voice output from microphone to byte format
-            recorder.read(audioBuffer, 0, bufferSize);
-            try {
-                //  writes the data to file from buffer stores the voice buffer
-                os.write(audioBuffer, 0, bufferSize);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        try {
-            recorder.stop();
-            recorder.release();
-            recorder = null;
-            recordingThread = null;
-            os.close();
+            setAutoIsRecording(false);
             System.out.println("recoder DONE");
         } catch (IOException e) {
             e.printStackTrace();

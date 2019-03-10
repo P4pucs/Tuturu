@@ -2,11 +2,9 @@ package com.sajt.kevin.tuturu.audio;
 
 import android.os.Environment;
 
-import com.sajt.kevin.tuturu.math.DSP.Filters;
 import com.sajt.kevin.tuturu.math.DSP.FourierTransform;
 import com.sajt.kevin.tuturu.math.DSP.MFCC;
 import com.sajt.kevin.tuturu.math.DSP.Utilities;
-import com.sajt.kevin.tuturu.math.FFT;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -17,7 +15,7 @@ import java.io.IOException;
 
 public class Alchemy {
 
-    private static double threshold = 1.1;
+    private static double threshold = 1;
 
     public static boolean alchemy(String audio1, String audio2) {
 
@@ -25,14 +23,6 @@ public class Alchemy {
         double[] signal2 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hanning(toDouble(readAudioFile(audio2))))));
 
         double mse = Utilities.MSE(signal1, signal2, signal1.length);
-
-        for (double asd : signal1) {
-            System.out.println("signal 1 : " + asd);
-        }
-
-        for (double dsa : signal2) {
-            System.out.println("signal 2 : " + dsa);
-        }
 
         System.out.println("MSE: " + mse );
 
@@ -45,8 +35,8 @@ public class Alchemy {
 
     public static boolean alchemy(String audio1, byte[] audio2) {
 
-        double[] signal1 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hamming(toDoubleArray(readAudioFile(audio1))))));
-        double[] signal2 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hamming(toDoubleArray(audio2)))));
+        double[] signal1 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hanning(toDouble(readAudioFile(audio1))))));
+        double[] signal2 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hanning(toDouble(audio2)))));
 
         double mse = Utilities.MSE(signal1, signal2, signal1.length);
 
@@ -98,17 +88,7 @@ public class Alchemy {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//
-//
-//        try {
-//            FileInputStream in = new FileInputStream(file);
-//            in.read(byteData);
-//            in.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+
         return byteData;
 
     }
