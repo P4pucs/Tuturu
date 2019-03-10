@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class Alchemy {
 
-    private static double threshold = 0.5;
+    private static double threshold = 1.1;
 
     public static boolean alchemy(String audio1, String audio2) {
 
