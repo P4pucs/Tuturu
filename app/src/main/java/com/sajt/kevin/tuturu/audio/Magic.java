@@ -41,7 +41,7 @@ public class Magic {
         recorder.startRecordForX();
     }
 
-    public static List<File> getFiles() {
+    public List<File> getFiles() {
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
 
         File directory = new File(path);
@@ -51,7 +51,7 @@ public class Magic {
         for (int i = 0; i < allFiles.length; i++) {
             String[] splFileName = allFiles[i].getName().split("\\.");
             if (splFileName.length > 1) {
-                if (splFileName[1].toLowerCase().equals("pcm")) {
+                if (splFileName[1].toLowerCase().equals("pcm") && !allFiles[i].getName().equals(recorder.getName())) {
                     pcmFiles.add(allFiles[i]);
                 }
             }

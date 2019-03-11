@@ -15,6 +15,7 @@ import com.sajt.kevin.tuturu.audio.Magic;
 import com.sajt.kevin.tuturu.audio.Recorder;
 
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RecorderActivity extends AppCompatActivity {
 
@@ -77,20 +78,31 @@ public class RecorderActivity extends AppCompatActivity {
             });
 
             //LINK START
-            Thread autoThread = new Thread(()-> {
-                new Magic().start();
-                /*
-                if (Alchemy.alchemy(recorder1.getName(), recorder2.getName())) {
-                    System.out.println("GOOD");
-                } else {
-                    System.out.println("NOT GOOD");
+
+            AtomicBoolean run = new AtomicBoolean(false);
+            Thread thread = new Thread(()-> {
+                while (true) {
+                    if (run.get()) {
+                        new Magic().start();
+                    } else {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
-                */
             });
+            thread.start();
+
             btnLinkStart = findViewById(R.id.linkStartButton);
             btnLinkStart.setOnClickListener((view) -> {
-                btnLinkStart.setText("Stop");
-                autoThread.start();
+                if (run.get()) {
+                    btnLinkStart.setText("LINK START");
+                } else {
+                    btnLinkStart.setText("LINK STOP");
+                }
+                run.set(!run.get());
             });
 
         } else {

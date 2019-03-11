@@ -31,8 +31,6 @@ public class Recorder {
     private Thread recordingThread = null;
     private boolean isRecording = false;
 
-    private boolean autoIsRecording = true;
-
 
     // Initialize minimum buffer size in bytes.
     private int bufferSize = AudioRecord.getMinBufferSize(RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_IN, RECORDER_AUDIO_ENCODING);
