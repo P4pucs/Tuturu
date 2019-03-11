@@ -33,14 +33,6 @@ public class Recorder {
 
     private boolean autoIsRecording = true;
 
-    public boolean isAutoIsRecording() {
-        return autoIsRecording;
-    }
-
-    public void setAutoIsRecording(boolean autoIsRecording) {
-        this.autoIsRecording = autoIsRecording;
-    }
-
 
     // Initialize minimum buffer size in bytes.
     private int bufferSize = AudioRecord.getMinBufferSize(RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_IN, RECORDER_AUDIO_ENCODING);
@@ -50,7 +42,7 @@ public class Recorder {
     }
 
     public String getName() {
-        return name;
+        return name + ".pcm";
     }
 
     public void startRecorder() {
@@ -68,7 +60,7 @@ public class Recorder {
 
     public void writeAudioDataToFile() {
         //Write the output audio in byte
-        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + getName() + ".pcm";
+        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + getName();
         byte audioBuffer[] = new byte[bufferSize];
 
         FileOutputStream os = null;
@@ -111,7 +103,7 @@ public class Recorder {
 
     public void startPlaying() {
         try {
-            PlayShortAudioFileViaAudioTrack(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + getName() + ".pcm");
+            PlayShortAudioFileViaAudioTrack(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + getName());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -156,14 +148,14 @@ public class Recorder {
         recorder = new AudioRecord(AUDIO_SOURCE, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_IN, RECORDER_AUDIO_ENCODING, bufferSize);
         // Starts recording from the AudioRecord instance.
         recorder.startRecording();
-        setAutoIsRecording(true);
-        recordingThread = new Thread(this::recordForX, "AudioRecorder Thread");
-        recordingThread.start();
+        recordForX();
+        //recordingThread = new Thread(this::recordForX, "AudioRecorder Thread");
+        //recordingThread.start();
     }
 
     public void recordForX() {
         //Write the output audio in byte
-        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + getName() + ".pcm";
+        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + getName();
         byte audioBuffer[] = new byte[bufferSize];
 
         FileOutputStream os = null;
@@ -188,10 +180,9 @@ public class Recorder {
             recorder.stop();
             recorder.release();
             recorder = null;
-            recordingThread = null;
+            //recordingThread = null;
             os.close();
-            setAutoIsRecording(false);
-            System.out.println("recoder DONE");
+            System.out.println("recorder DONE");
         } catch (IOException e) {
             e.printStackTrace();
         }

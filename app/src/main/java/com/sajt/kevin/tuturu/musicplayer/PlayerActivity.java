@@ -15,7 +15,7 @@ import com.sajt.kevin.tuturu.RecorderActivity;
 public class PlayerActivity extends Activity {
 
     Button playBtn, settingsBtn;
-    SeekBar positonBar;
+    SeekBar elapsedTimeSeekBar;
 
     MediaPlayer mp;
 
@@ -24,9 +24,14 @@ public class PlayerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_controller);
         //playBtn = (Button) findViewById(R.id.playButton);
-        settingsBtn = (Button) findViewById(R.id.settingsButton);
+        settingsBtn = findViewById(R.id.settingsButton);
         settingsBtn.setOnClickListener((view) -> {
             startActivity(new Intent(PlayerActivity.this, RecorderActivity.class));
+        });
+
+        playBtn = findViewById(R.id.playButton);
+        playBtn.setOnClickListener((view) -> {
+            Toast.makeText(PlayerActivity.this,"playing", Toast.LENGTH_SHORT).show();
         });
 
         //Media Player

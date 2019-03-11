@@ -6,23 +6,57 @@ import android.util.Log;
 import com.sajt.kevin.tuturu.audio.Recorder;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Magic {
-Alchemy alchemy = new Alchemy();
-Recorder recorder = new Recorder("looop");
-    public void magic () {
 
+    Recorder recorder;
+
+    public Magic() {
+        recorder = new Recorder("loooop");
     }
 
-    public static void getFiles() {
+    public void start() {
+        record();
+        Map<String, Boolean> comparison = compare();
+        for (String s : comparison.keySet()) {
+            System.out.println(s + " faszom: " + comparison.get(s));
+        }
+    }
+
+    public Map<String, Boolean> compare() {
+        List<File> pcmFiles = getFiles();
+        Map<String, Boolean> comparison = new HashMap<>();
+        for (File pedo : pcmFiles) {
+            comparison.put(pedo.getName(), Alchemy.alchemy(pedo.getName(), recorder.getName()));
+        }
+        return comparison;
+    }
+
+    public void record() {
+        recorder.startRecordForX();
+    }
+
+    public static List<File> getFiles() {
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
 
         File directory = new File(path);
-        File[] files = directory.listFiles();
+        File[] allFiles = directory.listFiles();
+        List<File> pcmFiles = new ArrayList<>();
 
-        for (int i = 0; i < files.length; i++)
-        {
-            System.out.println("FileName:" + files[i].getName());
+        for (int i = 0; i < allFiles.length; i++) {
+            String[] splFileName = allFiles[i].getName().split("\\.");
+            if (splFileName.length > 1) {
+                if (splFileName[1].toLowerCase().equals("pcm")) {
+                    pcmFiles.add(allFiles[i]);
+                }
+            }
         }
+
+        return pcmFiles;
     }
 }

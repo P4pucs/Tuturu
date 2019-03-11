@@ -14,8 +14,9 @@ import com.sajt.kevin.tuturu.audio.Alchemy;
 import com.sajt.kevin.tuturu.audio.Magic;
 import com.sajt.kevin.tuturu.audio.Recorder;
 
-public class RecorderActivity extends AppCompatActivity {
+import java.util.TimerTask;
 
+public class RecorderActivity extends AppCompatActivity {
 
     final int REQUEST_PERMISSION_CODE = 1000;
 
@@ -39,7 +40,7 @@ public class RecorderActivity extends AppCompatActivity {
             btnRecord1 = (Button)findViewById(R.id.recorder1Button);
             btnRecord1.setOnClickListener((view) -> {
                 recorder1.startRecordForX();
-
+                btnRecord1.setEnabled(false);
 
             });
 
@@ -54,6 +55,7 @@ public class RecorderActivity extends AppCompatActivity {
             btnRecord2 = (Button)findViewById(R.id.recorder2Button);
             btnRecord2.setOnClickListener((view) -> {
                 recorder2.startRecordForX();
+                btnRecord2.setEnabled(false);
             });
 
             btnPlay2 = (Button)findViewById(R.id.play2Button);
@@ -69,28 +71,26 @@ public class RecorderActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(RecorderActivity.this,"NOT GOOD", Toast.LENGTH_SHORT).show();
                 }
+                btnRecord1.setEnabled(true);
+                btnRecord2.setEnabled(true);
 
             });
 
             //LINK START
-            autoRecorder = new Recorder("loooop");
-
-            autoThread = new Thread(() -> {
-                if (Alchemy.alchemy(recorder1.getName(), autoRecorder.getName())) {
-                    Toast.makeText(RecorderActivity.this,"GOOD", Toast.LENGTH_SHORT).show();
+            Thread autoThread = new Thread(()-> {
+                new Magic().start();
+                /*
+                if (Alchemy.alchemy(recorder1.getName(), recorder2.getName())) {
+                    System.out.println("GOOD");
                 } else {
-                    Toast.makeText(RecorderActivity.this,"NOT GOOD", Toast.LENGTH_SHORT).show();
+                    System.out.println("NOT GOOD");
                 }
-
-
+                */
             });
-
-            btnLinkStart = (Button)findViewById(R.id.linkStartButton);
+            btnLinkStart = findViewById(R.id.linkStartButton);
             btnLinkStart.setOnClickListener((view) -> {
                 btnLinkStart.setText("Stop");
-                //autoThread.start();
-                Magic.getFiles();
-
+                autoThread.start();
             });
 
         } else {

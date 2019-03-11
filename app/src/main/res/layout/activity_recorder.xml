@@ -10,10 +10,10 @@
         android:id="@+id/recorder2Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="235dp"
-        android:layout_marginTop="83dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="35dp"
         android:text="record2" />
 
     <Button
@@ -22,32 +22,28 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="82dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="84dp"
         android:text="record1" />
 
     <Button
         android:id="@+id/play1Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/play1Button"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="43dp"
-        android:layout_marginTop="164dp"
-        android:layout_marginBottom="0dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="168dp"
         android:text="Play1" />
 
     <Button
         android:id="@+id/play2Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/play1Button"
-        android:layout_alignBottom="@+id/play2Button"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="194dp"
-        android:layout_marginTop="166dp"
-        android:layout_marginBottom="0dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="167dp"
+        android:layout_marginEnd="35dp"
         android:text="Play2" />
 
     <Button
@@ -55,19 +51,17 @@
         android:layout_width="115dp"
         android:layout_height="72dp"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="232dp"
-        android:layout_toEndOf="@+id/recorder1Button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="233dp"
         android:text="Alchemy" />
 
     <Button
         android:id="@+id/linkStartButton"
         android:layout_width="148dp"
         android:layout_height="62dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="121dp"
-        android:layout_marginTop="333dp"
+        android:layout_below="@+id/alchemyButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="27dp"
         android:text="Link Start" />
 
 </RelativeLayout>
