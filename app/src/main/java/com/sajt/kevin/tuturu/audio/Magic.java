@@ -1,16 +1,12 @@
 package com.sajt.kevin.tuturu.audio;
 
 import android.os.Environment;
-import android.util.Log;
-
-import com.sajt.kevin.tuturu.audio.Recorder;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Magic {
 
@@ -24,15 +20,15 @@ public class Magic {
         record();
         Map<String, Boolean> comparison = compare();
         for (String s : comparison.keySet()) {
-            System.out.println(s + " faszom: " + comparison.get(s));
+            System.out.println(s + " : " + comparison.get(s));
         }
     }
 
     public Map<String, Boolean> compare() {
         List<File> pcmFiles = getFiles();
         Map<String, Boolean> comparison = new HashMap<>();
-        for (File pedo : pcmFiles) {
-            comparison.put(pedo.getName(), Alchemy.alchemy(pedo.getName(), recorder.getName()));
+        for (File file : pcmFiles) {
+            comparison.put(file.getName(), Alchemy.start(file.getName(), recorder.getName()));
         }
         return comparison;
     }

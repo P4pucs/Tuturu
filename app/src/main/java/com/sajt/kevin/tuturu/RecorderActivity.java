@@ -14,7 +14,6 @@ import com.sajt.kevin.tuturu.audio.Alchemy;
 import com.sajt.kevin.tuturu.audio.Magic;
 import com.sajt.kevin.tuturu.audio.Recorder;
 
-import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RecorderActivity extends AppCompatActivity {
@@ -67,7 +66,7 @@ public class RecorderActivity extends AppCompatActivity {
             // Alchemy
             btnAlchemy = (Button)findViewById(R.id.alchemyButton);
             btnAlchemy.setOnClickListener((view) -> {
-                if (Alchemy.alchemy(recorder1.getName(), recorder2.getName())) {
+                if (Alchemy.start(recorder1.getName(), recorder2.getName())) {
                     Toast.makeText(RecorderActivity.this,"GOOD", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(RecorderActivity.this,"NOT GOOD", Toast.LENGTH_SHORT).show();
@@ -80,7 +79,7 @@ public class RecorderActivity extends AppCompatActivity {
             //LINK START
 
             AtomicBoolean run = new AtomicBoolean(false);
-            Thread thread = new Thread(()-> {
+            new Thread(()-> {
                 while (true) {
                     if (run.get()) {
                         new Magic().start();
@@ -92,8 +91,7 @@ public class RecorderActivity extends AppCompatActivity {
                         }
                     }
                 }
-            });
-            thread.start();
+            }).start();
 
             btnLinkStart = findViewById(R.id.linkStartButton);
             btnLinkStart.setOnClickListener((view) -> {

@@ -15,9 +15,9 @@ import java.io.IOException;
 
 public class Alchemy {
 
-    private static double threshold = 1;
+    private static double threshold = 0.3;
 
-    public static boolean alchemy(String audio1, String audio2) {
+    public static boolean start(String audio1, String audio2) {
 
         double[] signal1 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hanning(toDouble(readAudioFile(audio1))))));
         double[] signal2 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hanning(toDouble(readAudioFile(audio2))))));
@@ -33,7 +33,7 @@ public class Alchemy {
         }
     }
 
-    public static boolean alchemy(String audio1, byte[] audio2) {
+    public static boolean start(String audio1, byte[] audio2) {
 
         double[] signal1 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hanning(toDouble(readAudioFile(audio1))))));
         double[] signal2 = MFCC.compute(FourierTransform.Spectrum(nextPowOfTwo(hanning(toDouble(audio2)))));
@@ -77,7 +77,7 @@ public class Alchemy {
     // reads raw audio file into byte array
     private static byte[] readAudioFile(String audioFileName) {
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + audioFileName); //+ ".pcm
-        System.out.println("RÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁK: " + (int)file.length());
+
         byte[] byteData = new byte[(int) file.length()];
 
         try {
@@ -89,8 +89,6 @@ public class Alchemy {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
 
         return byteData;
 
