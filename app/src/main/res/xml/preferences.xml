@@ -68,7 +68,7 @@
 
         <RingtonePreference
             android:key="key_notifications_ringtone"
-            android:title="notifitaion_ringtone"
+            android:title="notification_ringtone"
             android:summary="Choose notification sound"
             android:ringtoneType="notification"
             android:dependency="enable_notifications"/>
