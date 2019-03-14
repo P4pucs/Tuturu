@@ -1,4 +1,4 @@
-package com.sajt.kevin.tuturu;
+package com.sajt.kevin.tuturu.settings;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.sajt.kevin.tuturu.R;
 import com.sajt.kevin.tuturu.audio.Alchemy;
 import com.sajt.kevin.tuturu.audio.Magic;
 import com.sajt.kevin.tuturu.audio.Recorder;

@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.app.Activity;
-import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.sajt.kevin.tuturu.R;
-import com.sajt.kevin.tuturu.RecorderActivity;
+import com.sajt.kevin.tuturu.settings.RecorderActivity;
+import com.sajt.kevin.tuturu.settings.SettingsActivity;
 
 public class PlayerActivity extends Activity {
 
@@ -26,7 +26,7 @@ public class PlayerActivity extends Activity {
         //playBtn = (Button) findViewById(R.id.playButton);
         settingsBtn = findViewById(R.id.settingsButton);
         settingsBtn.setOnClickListener((view) -> {
-            startActivity(new Intent(PlayerActivity.this, RecorderActivity.class));
+            startActivity(new Intent(PlayerActivity.this, SettingsActivity.class));
         });
 
         playBtn = findViewById(R.id.playButton);
