@@ -47,7 +47,7 @@ public class RecorderActivity extends AppCompatActivity {
 
             btnPlay1 = (Button)findViewById(R.id.play1Button);
             btnPlay1.setOnClickListener((view) -> {
-                recorder1.startPlaying();
+                recorder1.startPlayingRaw();
             });
 
             //RECORDER 2222222222222222222
@@ -61,7 +61,7 @@ public class RecorderActivity extends AppCompatActivity {
 
             btnPlay2 = (Button)findViewById(R.id.play2Button);
             btnPlay2.setOnClickListener((view) -> {
-                recorder2.startPlaying();
+                recorder2.startPlayingRaw();
             });
 
             // Alchemy

@@ -99,13 +99,22 @@ public class Recorder {
         }
     }
 
-    public void startPlaying() {
+    public void startPlayingRaw() {
         try {
             PlayShortAudioFileViaAudioTrack(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + getName());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public void startPlaying() {
+        try {
+            PlayShortAudioFileViaAudioTrack(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + name);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void PlayShortAudioFileViaAudioTrack(String filePath) throws IOException {
         //Reading the file..

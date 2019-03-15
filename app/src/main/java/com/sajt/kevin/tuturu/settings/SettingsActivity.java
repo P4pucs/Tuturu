@@ -44,36 +44,34 @@ public class SettingsActivity extends PreferenceActivity {
                 .getString(preference.getKey(), ""));
     }
 
-    private static Preference.OnPreferenceChangeListener listener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
-            String stringValue = newValue.toString();
-            if (preference instanceof ListPreference) {
-                ListPreference listPreference = (ListPreference) preference;
-                int index = listPreference.findIndexOfValue(stringValue);
-                // set the summary to reflect the new value
-                preference.setSummary(index >= 0
-                        ? listPreference.getEntries()[index]
-                        : null);
-            } else if (preference instanceof EditTextPreference) {
-                preference.setSummary(stringValue);
-            } else if (preference instanceof RingtonePreference) {
-                if (TextUtils.isEmpty(stringValue)) {
-                    // no ringtone
-                    preference.setSummary("Silent");
-                } else {
-                    Ringtone ringtone = RingtoneManager.getRingtone(preference.getContext(), Uri.parse(stringValue));
+    private static Preference.OnPreferenceChangeListener listener = (preference, newValue) -> {
+        String stringValue = newValue.toString();
 
-                    if (ringtone == null) {
-                        //clear the summary
-                        preference.setSummary("choose notification ringtone");
-                    } else {
-                        String name = ringtone.getTitle(preference.getContext());
-                        preference.setSummary(name);
-                    }
+        if (preference instanceof ListPreference) {
+            ListPreference listPreference = (ListPreference) preference;
+            int index = listPreference.findIndexOfValue(stringValue);
+            // set the summary to reflect the new value
+            preference.setSummary(index >= 0
+                    ? listPreference.getEntries()[index]
+                    : null);
+        } else if (preference instanceof EditTextPreference) {
+            preference.setSummary(stringValue);
+        } else if (preference instanceof RingtonePreference) {
+            if (TextUtils.isEmpty(stringValue)) {
+                // no ringtone
+                preference.setSummary("Silent");
+            } else {
+                Ringtone ringtone = RingtoneManager.getRingtone(preference.getContext(), Uri.parse(stringValue));
+
+                if (ringtone == null) {
+                    //clear the summary
+                    preference.setSummary("choose notification ringtone");
+                } else {
+                    String name = ringtone.getTitle(preference.getContext());
+                    preference.setSummary(name);
                 }
             }
-            return true;
         }
+        return true;
     };
 }

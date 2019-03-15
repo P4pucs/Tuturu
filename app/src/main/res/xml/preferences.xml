@@ -2,6 +2,17 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
+        android:title="YES"
+        android:key="yes_category">
+
+        <SwitchPreference
+            android:key="magic_key"
+            android:editable="true"
+            android:title="Magic"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="user_category"
         android:title="USER">
 
