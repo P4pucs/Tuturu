@@ -12,7 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".musicplayer.PlayerActivity"
             android:label="@string/title_activity_mpmain">
@@ -22,10 +21,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".settings.RecorderActivity"/>
-
-        <activity android:name=".settings.SettingsActivity"/>
-
+        <activity android:name=".settings.RecorderActivity">
+            <intent-filter>
+                <action android:name="com.sajt.kevin.tuturu.settings.RecorderActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".settings.SettingsActivity" />
+        <activity android:name=".settings.TemplateListActivity">
+            <intent-filter>
+                <action android:name="com.sajt.kevin.tuturu.settings.TemplateListActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

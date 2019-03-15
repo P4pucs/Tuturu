@@ -15,7 +15,6 @@ import com.sajt.kevin.tuturu.settings.SettingsActivity;
 public class PlayerActivity extends Activity {
 
     Button playBtn, settingsBtn;
-    SeekBar elapsedTimeSeekBar;
 
     MediaPlayer mp;
 
@@ -23,6 +22,7 @@ public class PlayerActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_controller);
+
         //playBtn = (Button) findViewById(R.id.playButton);
         settingsBtn = findViewById(R.id.settingsButton);
         settingsBtn.setOnClickListener((view) -> {

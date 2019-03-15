@@ -27,7 +27,21 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="player">
+        android:title="RECORDER">
+
+        <Preference
+            android:title="Create template"
+            android:summary="Create new sound pattern">
+            <intent
+                android:action="com.sajt.kevin.tuturu.settings.RecorderActivity"/>
+        </Preference>
+
+        <Preference
+            android:title="Templates"
+            android:summary="List of templates">
+            <intent
+                android:action="com.sajt.kevin.tuturu.settings.TemplateListActivity"/>
+        </Preference>
 
         <CheckBoxPreference
             android:defaultValue="true"
