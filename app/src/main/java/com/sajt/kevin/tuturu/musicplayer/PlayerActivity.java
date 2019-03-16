@@ -2,6 +2,7 @@ package com.sajt.kevin.tuturu.musicplayer;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.Button;
@@ -20,6 +21,7 @@ public class PlayerActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_controller);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         //playBtn = (Button) findViewById(R.id.playButton);
         settingsBtn = findViewById(R.id.settingsButton);
