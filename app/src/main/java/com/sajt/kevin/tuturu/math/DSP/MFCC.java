@@ -61,7 +61,6 @@ public class MFCC {
 
     public static double[] compute(double[] signal)
     {
-        System.out.println("RÁÁÁÁÁK: " + melWorkingFrequencies.length + " / " + signal.length);
 
         double[] result = new double[melWorkingFrequencies.length];
         double[] mfcc = new double[melWorkingFrequencies.length];

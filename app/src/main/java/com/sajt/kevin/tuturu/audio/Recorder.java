@@ -192,7 +192,7 @@ public class Recorder {
             recorder = null;
             //recordingThread = null;
             os.close();
-            System.out.println("recorder DONE");
+            //System.out.println("recorder DONE");
         } catch (IOException e) {
             e.printStackTrace();
         }

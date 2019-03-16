@@ -65,7 +65,7 @@ public class TemplateListActivity extends AppCompatActivity {
                 return true;
             case R.id.option_delete:
             templateAdapter.remove(templateAdapter.getItem(info.position));
-            Toast.makeText(this, "DELETE", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "DELETE", Toast.LENGTH_SHORT).show();
             return true;
             default:
                 return super.onContextItemSelected(item);

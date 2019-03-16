@@ -3,6 +3,9 @@ package com.sajt.kevin.tuturu.audio;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.sajt.kevin.tuturu.settings.RecorderActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,6 +30,12 @@ public class Magic {
         Map<String, Boolean> comparison = compare();
         for (String s : comparison.keySet()) {
             System.out.println(s + " : " + comparison.get(s));
+
+            if (comparison.get(s) == true) {
+                System.out.println("there is a mach:");
+                break;
+            }
+
         }
     }
 

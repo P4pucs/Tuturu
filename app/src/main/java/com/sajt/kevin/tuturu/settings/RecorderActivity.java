@@ -69,7 +69,6 @@ public class RecorderActivity extends AppCompatActivity {
             btnRecord2 = (Button)findViewById(R.id.recorder2Button);
             btnRecord2.setOnClickListener((view) -> {
                 recorder2.startRecordForX();
-                btnRecord2.setEnabled(false);
             });
 
             btnPlay2 = (Button)findViewById(R.id.play2Button);
@@ -85,8 +84,6 @@ public class RecorderActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(RecorderActivity.this,"NOT GOOD", Toast.LENGTH_SHORT).show();
                 }
-                btnRecord1.setEnabled(true);
-                btnRecord2.setEnabled(true);
 
             });
 
