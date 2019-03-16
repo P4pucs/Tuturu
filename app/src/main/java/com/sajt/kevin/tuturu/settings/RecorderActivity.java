@@ -1,13 +1,16 @@
 package com.sajt.kevin.tuturu.settings;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.sajt.kevin.tuturu.R;
@@ -21,13 +24,13 @@ public class RecorderActivity extends AppCompatActivity {
 
     final int REQUEST_PERMISSION_CODE = 1000;
 
-    private Recorder recorder1, recorder2, autoRecorder;
+    private Recorder recorder1, recorder2;
     private static Button btnRecord1, btnPlay1;
     private static Button btnRecord2, btnPlay2;
     private static Button btnAlchemy;
     private static Button btnLinkStart;
+    private static EditText nameText;
 
-    private Thread autoThread = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +39,22 @@ public class RecorderActivity extends AppCompatActivity {
 
         if (checkPermissionFromDevice()) {
             //RECORDER 111111111111111111
-            recorder1 = new Recorder("audio1");
+            recorder1 = new Recorder();
+
+            nameText = findViewById(R.id.nameText);
 
             btnRecord1 = (Button)findViewById(R.id.recorder1Button);
             btnRecord1.setOnClickListener((view) -> {
-                recorder1.startRecordForX();
-                btnRecord1.setEnabled(false);
+
+                if (nameText.getText().toString().trim().length() > 0) {
+                    Toast.makeText(this, "alma" ,Toast.LENGTH_SHORT).show();
+                    recorder1.setName(nameText.getText().toString());
+                    recorder1.startRecordForX();
+
+                } else {
+                    Toast.makeText(this, "give a name" ,Toast.LENGTH_SHORT).show();
+                }
+                //btnRecord1.setEnabled(false);
 
             });
 

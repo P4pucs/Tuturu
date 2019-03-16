@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="84dp"
-        android:layout_marginEnd="35dp"
+        android:layout_marginTop="231dp"
+        android:layout_marginEnd="18dp"
         android:text="record2" />
 
     <Button
@@ -23,7 +23,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="231dp"
         android:text="record1" />
 
     <Button
@@ -33,7 +33,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="168dp"
+        android:layout_marginTop="304dp"
         android:text="Play1" />
 
     <Button
@@ -42,8 +42,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="167dp"
-        android:layout_marginEnd="35dp"
+        android:layout_marginTop="305dp"
+        android:layout_marginEnd="23dp"
         android:text="Play2" />
 
     <Button
@@ -52,16 +52,28 @@
         android:layout_height="72dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="233dp"
+        android:layout_marginTop="389dp"
         android:text="Alchemy" />
 
     <Button
         android:id="@+id/linkStartButton"
         android:layout_width="148dp"
         android:layout_height="62dp"
-        android:layout_below="@+id/alchemyButton"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp"
+        android:layout_marginBottom="28dp"
         android:text="Link Start" />
+
+    <EditText
+        android:id="@+id/nameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="132dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:singleLine="true"
+        android:hint="name" />
 
 </RelativeLayout>

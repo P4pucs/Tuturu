@@ -8,10 +8,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.sajt.kevin.tuturu.R;
-import com.sajt.kevin.tuturu.audio.Magic;
 import com.sajt.kevin.tuturu.settings.SettingsActivity;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PlayerActivity extends Activity {
 

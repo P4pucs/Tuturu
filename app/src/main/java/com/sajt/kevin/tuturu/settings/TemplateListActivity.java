@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -55,13 +56,17 @@ public class TemplateListActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+
         switch (item.getItemId()) {
-            case R.id.option_delete:
-                Toast.makeText(this, "DELETE", Toast.LENGTH_SHORT).show();
-                return true;
             case R.id.option_edit:
                 Toast.makeText(this, "Ki az az edit?", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.option_delete:
+            templateAdapter.remove(templateAdapter.getItem(info.position));
+            Toast.makeText(this, "DELETE", Toast.LENGTH_SHORT).show();
+            return true;
             default:
                 return super.onContextItemSelected(item);
         }

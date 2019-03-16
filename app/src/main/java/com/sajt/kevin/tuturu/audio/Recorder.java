@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class Recorder {
+
     private String name;
 
     private static String TAG = "VoiceRecord";
@@ -38,10 +39,12 @@ public class Recorder {
     public Recorder(String name) {
         this.name = name;
     }
+    public Recorder() {}
 
     public String getName() {
         return name + ".pcm";
     }
+    public void setName(String name) { this.name = name; }
 
     public void startRecorder() {
 
