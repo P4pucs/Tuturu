@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import com.sajt.kevin.tuturu.R;
 
 public class SettingsActivity extends PreferenceActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,11 +30,11 @@ public class SettingsActivity extends PreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
 
-            bindSummaryValue(findPreference("key_full_name"));
-            bindSummaryValue(findPreference("key_email"));
-            bindSummaryValue(findPreference("key_sleep_timer"));
-            bindSummaryValue(findPreference("key_music_quality"));
-            bindSummaryValue(findPreference("key_notifications_ringtone"));
+//            bindSummaryValue(findPreference("key_full_name"));
+//            bindSummaryValue(findPreference("key_email"));
+//            bindSummaryValue(findPreference("key_sleep_timer"));
+//            bindSummaryValue(findPreference("key_music_quality"));
+//            bindSummaryValue(findPreference("key_notifications_ringtone"));
         }
     }
 

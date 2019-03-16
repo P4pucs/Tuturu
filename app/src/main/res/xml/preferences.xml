@@ -13,31 +13,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="user_category"
-        android:title="USER">
-
-        <EditTextPreference
-            android:dialogTitle="Your name"
-            android:dialogMessage="enter your full name"
-            android:inputType="textCapWords"
-            android:key="key_full_name"
-            android:title="Name"
-            android:summary="sajtos pogacsa">
-
-        </EditTextPreference>
-
-        <EditTextPreference
-            android:dialogTitle="Your email"
-            android:dialogMessage="enter your email address"
-            android:inputType="textEmailAddress"
-            android:key="key_email"
-            android:title="Email"
-            android:summary="sajt@krumpli.com">
-
-        </EditTextPreference>
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:title="RECORDER">
 
         <Preference
@@ -53,35 +28,6 @@
             <intent
                 android:action="com.sajt.kevin.tuturu.settings.TemplateListActivity"/>
         </Preference>
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="enable_timer"
-            android:title="Enable sleep timer"
-            android:summary="ena or disa sleep timer"
-        />
-
-        <ListPreference
-            android:dependency="enable_timer"
-            android:key="key_sleep_timer"
-            android:title="sleep timer"
-            android:summary="stop playing music after some time"
-            android:entries="@array/timerList"
-            android:entryValues="@array/timerListValues"/>
-
-        <ListPreference
-            android:key="key_music_quality"
-            android:title="Music quality"
-            android:entries="@array/musicQuality"
-            android:entryValues="@array/musicQualityValues"/>
-
-        <MultiSelectListPreference
-            android:dialogTitle="select all your options"
-            android:key="music_type"
-            android:title="Types of music"
-            android:summary="press to show list"
-            android:entries="@array/typesOfMusic"
-            android:entryValues="@array/typesOfMusicValues"/>
     </PreferenceCategory>
 
     <PreferenceCategory

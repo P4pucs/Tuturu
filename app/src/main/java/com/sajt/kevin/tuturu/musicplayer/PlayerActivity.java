@@ -1,22 +1,23 @@
 package com.sajt.kevin.tuturu.musicplayer;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.app.Activity;
 import android.widget.Button;
-import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.sajt.kevin.tuturu.R;
-import com.sajt.kevin.tuturu.settings.RecorderActivity;
+import com.sajt.kevin.tuturu.audio.Magic;
 import com.sajt.kevin.tuturu.settings.SettingsActivity;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PlayerActivity extends Activity {
 
     Button playBtn, settingsBtn;
 
-    MediaPlayer mp;
+    MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +36,14 @@ public class PlayerActivity extends Activity {
         });
 
         //Media Player
-        //mp = MediaPlayer.create(this, R.raw.music)
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 
 
 }
