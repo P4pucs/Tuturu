@@ -1,14 +1,8 @@
 package com.sajt.kevin.tuturu.audio;
 
-import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
