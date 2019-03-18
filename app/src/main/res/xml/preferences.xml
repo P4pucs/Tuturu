@@ -30,20 +30,4 @@
         </Preference>
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="other">
-        <SwitchPreference
-            android:key="enable_notifications"
-            android:editable="true"
-            android:title="push notifications"/>
-
-        <RingtonePreference
-            android:key="key_notifications_ringtone"
-            android:title="notification_ringtone"
-            android:summary="Choose notification sound"
-            android:ringtoneType="notification"
-            android:dependency="enable_notifications"/>
-
-    </PreferenceCategory>
-
 </PreferenceScreen>

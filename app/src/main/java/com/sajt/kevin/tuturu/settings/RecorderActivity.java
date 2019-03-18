@@ -93,36 +93,36 @@ public class RecorderActivity extends AppCompatActivity {
 
             //LINK START
 
-            AtomicBoolean run = new AtomicBoolean(false);
-            new Thread(()-> {
-
-                MediaPlayer mp;
-                mp = MediaPlayer.create(this, R.raw.beep);
-
-                while (true) {
-                    if (run.get()) {
-                        if (new Magic().start()) {
-                            mp.start();
-                        }
-                    } else {
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }).start();
-
-            btnLinkStart = findViewById(R.id.linkStartButton);
-            btnLinkStart.setOnClickListener((view) -> {
-                if (run.get()) {
-                    btnLinkStart.setText("LINK START");
-                } else {
-                    btnLinkStart.setText("LINK STOP");
-                }
-                run.set(!run.get());
-            });
+//            AtomicBoolean run = new AtomicBoolean(false);
+//            new Thread(()-> {
+//
+//                MediaPlayer mp;
+//                mp = MediaPlayer.create(this, R.raw.beep);
+//
+//                while (true) {
+//                    if (run.get()) {
+//                        if (new Magic().start()) {
+//                            mp.start();
+//                        }
+//                    } else {
+//                        try {
+//                            Thread.sleep(1000);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//            }).start();
+//
+//            btnLinkStart = findViewById(R.id.linkStartButton);
+//            btnLinkStart.setOnClickListener((view) -> {
+//                if (run.get()) {
+//                    btnLinkStart.setText("LINK START");
+//                } else {
+//                    btnLinkStart.setText("LINK STOP");
+//                }
+//                run.set(!run.get());
+//            });
 
         } else {
             requestPermission();
