@@ -23,6 +23,7 @@ public class PlayerActivity extends Activity {
         setContentView(R.layout.activity_controller);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
+
         //playBtn = (Button) findViewById(R.id.playButton);
         settingsBtn = findViewById(R.id.settingsButton);
         settingsBtn.setOnClickListener((view) -> {
