@@ -28,11 +28,9 @@ public class RecorderActivity extends AppCompatActivity {
 
     final int REQUEST_PERMISSION_CODE = 1000;
 
-    private Recorder recorder1, recorder2;
+    private Recorder recorder1;
     private static Button btnRecord1, btnPlay1;
-    private static Button btnRecord2, btnPlay2;
-    private static Button btnAlchemy;
-    private static Button btnLinkStart;
+
     private static EditText nameText;
 
 
@@ -67,62 +65,6 @@ public class RecorderActivity extends AppCompatActivity {
                 recorder1.startPlayingRaw();
             });
 
-            //RECORDER 2222222222222222222
-            recorder2 = new Recorder("audio2");
-
-            btnRecord2 = (Button)findViewById(R.id.recorder2Button);
-            btnRecord2.setOnClickListener((view) -> {
-                recorder2.startRecordForX();
-            });
-
-            btnPlay2 = (Button)findViewById(R.id.play2Button);
-            btnPlay2.setOnClickListener((view) -> {
-                recorder2.startPlayingRaw();
-            });
-
-            // Alchemy
-            btnAlchemy = (Button)findViewById(R.id.alchemyButton);
-            btnAlchemy.setOnClickListener((view) -> {
-                if (Alchemy.start(recorder1.getName(), recorder2.getName())) {
-                    Toast.makeText(RecorderActivity.this,"GOOD", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(RecorderActivity.this,"NOT GOOD", Toast.LENGTH_SHORT).show();
-                }
-
-            });
-
-            //LINK START
-
-//            AtomicBoolean run = new AtomicBoolean(false);
-//            new Thread(()-> {
-//
-//                MediaPlayer mp;
-//                mp = MediaPlayer.create(this, R.raw.beep);
-//
-//                while (true) {
-//                    if (run.get()) {
-//                        if (new Magic().start()) {
-//                            mp.start();
-//                        }
-//                    } else {
-//                        try {
-//                            Thread.sleep(1000);
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//            }).start();
-//
-//            btnLinkStart = findViewById(R.id.linkStartButton);
-//            btnLinkStart.setOnClickListener((view) -> {
-//                if (run.get()) {
-//                    btnLinkStart.setText("LINK START");
-//                } else {
-//                    btnLinkStart.setText("LINK STOP");
-//                }
-//                run.set(!run.get());
-//            });
 
         } else {
             requestPermission();
