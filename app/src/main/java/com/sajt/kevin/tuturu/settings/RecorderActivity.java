@@ -65,7 +65,6 @@ public class RecorderActivity extends AppCompatActivity {
                 recorder1.startPlayingRaw();
             });
 
-
         } else {
             requestPermission();
         }

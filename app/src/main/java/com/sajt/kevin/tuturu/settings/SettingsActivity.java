@@ -15,14 +15,13 @@ import android.widget.Toast;
 import com.sajt.kevin.tuturu.R;
 import com.sajt.kevin.tuturu.audio.Magic;
 
-import java.util.BitSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SettingsActivity extends PreferenceActivity {
 
     final int REQUEST_PERMISSION_CODE = 1000;
 
-    static AtomicBoolean run = new AtomicBoolean(false);
+    static AtomicBoolean runMagic = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,7 @@ public class SettingsActivity extends PreferenceActivity {
             Magic magic = new Magic();
 
             while (true) {
-                if (run.get()) {
+                if (runMagic.get()) {
                     if (magic.start()) {
                         mp.start();
                     }
@@ -70,29 +69,24 @@ public class SettingsActivity extends PreferenceActivity {
             addPreferencesFromResource(R.xml.preferences);
 
             SwitchPreference magicSwitch = (SwitchPreference) findPreference("magic_key");
-
-            if (magicSwitch.isEnabled()) {
-                run.set(true);
-                System.out.println("TRUE Blyat");
+            if (magicSwitch.isChecked()) {
+                runMagic.set(magicSwitch.isChecked());
             } else {
-                System.out.println(" FALSE Blyat");
-                run.set(false);
+                runMagic.set(magicSwitch.isChecked());
             }
 
-            if (magicSwitch != null) {
                 magicSwitch.setOnPreferenceChangeListener((arg0, isMagicOnObject) -> {
                     boolean isMagicOn = (Boolean) isMagicOnObject;
-                    System.out.println("isMagicOn: " + isMagicOn);
                     if (isMagicOn) {
-                        run.set(true);
+                        runMagic.set(true);
                     } else {
-                        run.set(false);
+                        runMagic.set(false);
                     }
                     return true;
                 });
             }
         }
-    }
+
 
 
     private void requestPermission() {
