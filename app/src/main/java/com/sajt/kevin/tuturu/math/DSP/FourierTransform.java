@@ -84,7 +84,7 @@ public class FourierTransform {
     {
         if (Index >= NumSamples)
             return 0.0;
-        else if (Index <= NumSamples / 2)
+        else if (Index <= NumSamples * 0.5)
             return (double)Index / (double)NumSamples;
 
         return -(double)(NumSamples - Index) / (double)NumSamples;

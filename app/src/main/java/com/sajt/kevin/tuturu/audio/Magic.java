@@ -22,7 +22,6 @@ public class Magic {
         for (String s : comparison.keySet()) {
             //System.out.println(s + " : " + comparison.get(s));
             if (comparison.get(s) == true) {
-                System.out.println("there is a mach:");
                 match = true;
                 break;
             }
