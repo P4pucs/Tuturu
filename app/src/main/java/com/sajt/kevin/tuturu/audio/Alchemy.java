@@ -68,7 +68,7 @@ public class Alchemy {
             vals[i] = (int)(short)((hByte << 8) | lByte);
             Xs[i] = i;
             Ys[i] = vals[i];
-            Xs2[i] = (double)i/Ys.length*8000/1000.0; // units are in kHz
+            Xs2[i] = (double)i/Ys.length*16000/1000.0; // units are in kHz
         }
 
         return Ys;

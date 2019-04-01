@@ -19,8 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class Recorder {
 
     private String name;
-
-    private static String TAG = "VoiceRecord";
+    private String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + getName();
 
     private static final int RECORDER_SAMPLE_RATE = 16000;
     private static final int RECORDER_CHANNELS_IN = AudioFormat.CHANNEL_IN_MONO;
@@ -37,9 +36,8 @@ public class Recorder {
     // Initialize minimum buffer size in bytes.
     private int bufferSize = AudioRecord.getMinBufferSize(RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_IN, RECORDER_AUDIO_ENCODING);
 
-    public Recorder(String name) {
-        this.name = name;
-    }
+    public Recorder(String name) { this.name = name; }
+
     public Recorder() {}
 
     public String getName() {
@@ -62,7 +60,7 @@ public class Recorder {
 
     public void writeAudioDataToFile() {
         //Write the output audio in byte
-        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + getName();
+
         byte audioBuffer[] = new byte[bufferSize];
 
         FileOutputStream os = null;
@@ -105,7 +103,7 @@ public class Recorder {
 
     public void startPlayingRaw() {
         try {
-            PlayShortAudioFileViaAudioTrack(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + getName());
+            PlayShortAudioFileViaAudioTrack(filePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -113,7 +111,7 @@ public class Recorder {
 
     public void startPlaying() {
         try {
-            PlayShortAudioFileViaAudioTrack(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + name);
+            PlayShortAudioFileViaAudioTrack(filePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -146,7 +144,7 @@ public class Recorder {
                 at.stop();
                 at.release();
             } else
-                Log.d(TAG, "audio track is not initialised ");
+                Log.d("audio recorder", "audio track is not initialised ");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -166,7 +164,6 @@ public class Recorder {
 
     public void recordForX() {
         //Write the output audio in byte
-        String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + getName();
         byte audioBuffer[] = new byte[bufferSize];
 
         FileOutputStream os = null;
@@ -178,10 +175,8 @@ public class Recorder {
 
         long endTime = System.nanoTime() + TimeUnit.NANOSECONDS.convert((long) 2, TimeUnit.SECONDS);
         while ( System.nanoTime() < endTime ){
-            // gets the voice output from microphone to byte format
             recorder.read(audioBuffer, 0, bufferSize);
             try {
-                //  writes the data to file from buffer stores the voice buffer
                 os.write(audioBuffer, 0, bufferSize);
             } catch (IOException e) {
                 e.printStackTrace();
