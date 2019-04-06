@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.sajt.kevin.tuturu.R;
-import com.sajt.kevin.tuturu.audio.Magic;
+import com.sajt.kevin.tuturu.audio.Alchemy;
 import com.sajt.kevin.tuturu.audio.Recorder;
 
 import java.io.File;
@@ -33,7 +33,7 @@ public class TemplateListActivity extends AppCompatActivity {
         templateListView = findViewById(R.id.templateListView);
         registerForContextMenu(templateListView);
 
-        templateFiles = new Magic().getFiles();
+        templateFiles = new Alchemy().getFiles();
 
         templateAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, templateFiles);
         templateListView.setAdapter(templateAdapter);

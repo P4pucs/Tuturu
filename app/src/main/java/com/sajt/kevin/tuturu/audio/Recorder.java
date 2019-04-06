@@ -4,7 +4,6 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
 import android.media.AudioTrack;
-import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.util.Log;
@@ -18,8 +17,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Recorder {
 
+    //filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName();
     private String name;
-    private String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName();
 
     private static final int RECORDER_SAMPLE_RATE = 16000;
     private static final int RECORDER_CHANNELS_IN = AudioFormat.CHANNEL_IN_MONO;
@@ -92,7 +91,7 @@ public class Recorder {
         }
     }
 
-    public void stopRecording() {
+    public void stopRecorder() {
         try {
             if (null != recorder) {
                 isRecording = false;
@@ -108,7 +107,7 @@ public class Recorder {
 
     public void startPlayingRecorder() {
         try {
-            PlayShortAudioFileViaAudioTrack(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName());
+            PlayAudioFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -116,56 +115,54 @@ public class Recorder {
 
     public void startPlayingTemplate() {
         try {
-            PlayShortAudioFileViaAudioTrack(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getName());
+            PlayAudioFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getName());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    private void PlayShortAudioFileViaAudioTrack(String filePath) throws IOException {
-        //Reading the file..
-        try {
-            File file = new File(filePath);
-            byte[] byteData = new byte[(int) file.length()];
-            System.out.println("play: " + byteData.length);
-            System.out.println("playname: " + getName());
-            FileInputStream in;
+    private void PlayAudioFile(String filePath) throws IOException {
+        new Thread(()->{
             try {
-                in = new FileInputStream(file);
-                in.read(byteData);
-                in.close();
+                File file = new File(filePath);
+                byte[] byteData = new byte[(int) file.length()];
+
+                FileInputStream in;
+                try {
+                    in = new FileInputStream(file);
+                    in.read(byteData);
+                    in.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                // Set and push to audio track..
+                int intSize = android.media.AudioTrack.getMinBufferSize(RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_OUT, RECORDER_AUDIO_ENCODING);
+
+                AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_OUT, RECORDER_AUDIO_ENCODING, intSize, AudioTrack.MODE_STREAM);
+
+                if (at != null) {
+                    at.play();
+                    // Write the byte array to the track
+                    at.write(byteData, 0, byteData.length);
+                    at.stop();
+                    at.release();
+                } else
+                    Log.d("audio recorder", "audio track is not initialised ");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            // Set and push to audio track..
-            int intSize = android.media.AudioTrack.getMinBufferSize(RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_OUT, RECORDER_AUDIO_ENCODING);
+        }).start();
 
-            AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_OUT, RECORDER_AUDIO_ENCODING, intSize, AudioTrack.MODE_STREAM);
-
-            if (at != null) {
-                at.play();
-                // Write the byte array to the track
-                at.write(byteData, 0, byteData.length);
-                at.stop();
-                at.release();
-            } else
-                Log.d("audio recorder", "audio track is not initialised ");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void startRecordForX() {
-        // Initialize Audio Recorder.
-        recorder = new AudioRecord(AUDIO_SOURCE, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_IN, RECORDER_AUDIO_ENCODING, bufferSize);
-        // Starts recording from the AudioRecord instance.
-        recorder.startRecording();
-        recordForX();
-        //recordingThread = new Thread(this::recordForX, "AudioRecorder Thread");
-        //recordingThread.start();
+        new Thread(() -> {
+            recorder = new AudioRecord(AUDIO_SOURCE, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_IN, RECORDER_AUDIO_ENCODING, bufferSize);
+            recorder.startRecording();
+            recordForX();
+        }).start();
     }
 
     private void recordForX() {

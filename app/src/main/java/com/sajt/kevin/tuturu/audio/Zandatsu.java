@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Zandatsu {
 
@@ -42,6 +43,10 @@ public class Zandatsu {
         System.out.println("alive");
     }
 
+    public String getName(){
+        return recorder.getName();
+    }
+
     private byte[] readAudioFile() throws FileNotFoundException {
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + recorder.getFileName());
 
@@ -61,8 +66,20 @@ public class Zandatsu {
         return byteData;
     }
 
-    public void playAudio(){
+    public void playAudio() {
         recorder.startPlayingRecorder();
+    }
+
+    public void recordAudio() {
+        recorder.startRecorder();
+    }
+
+    public void stopRecordAudio() {
+        recorder.stopRecorder();
+    }
+
+    public void setName(String name) {
+        recorder.setName(name);
     }
 
 }

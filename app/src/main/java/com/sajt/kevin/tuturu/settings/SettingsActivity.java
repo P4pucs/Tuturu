@@ -13,7 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import com.sajt.kevin.tuturu.R;
-import com.sajt.kevin.tuturu.audio.Magic;
+import com.sajt.kevin.tuturu.audio.Alchemy;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -38,11 +38,11 @@ public class SettingsActivity extends PreferenceActivity {
             MediaPlayer mp;
             mp = MediaPlayer.create(this, R.raw.beep);
 
-            Magic magic = new Magic();
+            Alchemy alchemy = new Alchemy();
 
             while (true) {
                 if (runMagic.get()) {
-                    if (magic.start()) {
+                    if (alchemy.start()) {
                         mp.start();
                     }
                 } else {

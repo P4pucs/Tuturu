@@ -12,9 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="231dp"
-        android:layout_marginEnd="18dp"
-        android:text="record2" />
+        android:layout_marginTop="229dp"
+        android:layout_marginEnd="23dp"
+        android:text="record" />
 
     <Button
         android:id="@+id/recorder1Button"
@@ -24,7 +24,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="35dp"
         android:layout_marginTop="231dp"
-        android:text="record1" />
+        android:text="record" />
 
     <Button
         android:id="@+id/play1Button"
@@ -34,7 +34,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="35dp"
         android:layout_marginTop="304dp"
-        android:text="Play1" />
+        android:text="Play" />
 
     <Button
         android:id="@+id/play2Button"
@@ -44,16 +44,16 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="305dp"
         android:layout_marginEnd="23dp"
-        android:text="Play2" />
+        android:text="Play" />
 
     <Button
-        android:id="@+id/alchemyButton"
+        android:id="@+id/zandatsuButton"
         android:layout_width="115dp"
         android:layout_height="72dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="389dp"
-        android:text="Alchemy" />
+        android:text="Zandatsu" />
 
     <Button
         android:id="@+id/linkStartButton"
@@ -75,5 +75,36 @@
         android:inputType="textPersonName"
         android:singleLine="true"
         android:hint="name" />
+
+    <TextView
+        android:id="@+id/textForShortRec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="191dp"
+        android:text="2 sec record" />
+
+    <TextView
+        android:id="@+id/textForLongRec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="191dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="11dp"
+        android:text="X sec record" />
+
+    <TextView
+        android:id="@+id/TimerText"
+        android:layout_width="72dp"
+        android:layout_height="39dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="245dp"
+        android:layout_toEndOf="@+id/recorder1Button"
+        tools:text="Timer" />
 
 </RelativeLayout>
