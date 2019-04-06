@@ -68,9 +68,9 @@ public class Recorder {
 
         byte audioBuffer[] = new byte[bufferSize];
 
-        FileOutputStream os = null;
+        FileOutputStream fileOutputStream = null;
         try {
-            os = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName());
+            fileOutputStream = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -80,13 +80,13 @@ public class Recorder {
             recorder.read(audioBuffer, 0, bufferSize);
             try {
                 //  writes the data to file from buffer stores the voice buffer
-                os.write(audioBuffer, 0, bufferSize);
+                fileOutputStream.write(audioBuffer, 0, bufferSize);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         try {
-            os.close();
+            fileOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

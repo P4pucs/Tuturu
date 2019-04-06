@@ -20,6 +20,7 @@ import com.sajt.kevin.tuturu.R;
 import com.sajt.kevin.tuturu.audio.Alchemy;
 import com.sajt.kevin.tuturu.audio.Magic;
 import com.sajt.kevin.tuturu.audio.Recorder;
+import com.sajt.kevin.tuturu.audio.Zandatsu;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -30,6 +31,7 @@ public class RecorderActivity extends AppCompatActivity {
 
     private Recorder recorder1;
     private static Button btnRecord1, btnPlay1;
+    private static Button btnRecord2, btnPlay2;
 
     private static EditText nameText;
 
@@ -63,6 +65,29 @@ public class RecorderActivity extends AppCompatActivity {
             btnPlay1 = (Button)findViewById(R.id.play1Button);
             btnPlay1.setOnClickListener((view) -> {
                 recorder1.startPlayingRecorder();
+            });
+
+            //RECORDER 222222222222222222222
+
+            Zandatsu zandatsu = new Zandatsu("alma");
+
+            btnRecord2 = (Button)findViewById(R.id.recorder2Button);
+            btnRecord2.setOnClickListener((view) -> {
+
+                if (true) {
+                    Toast.makeText(this, "Zandatsu" ,Toast.LENGTH_SHORT).show();
+                    zandatsu.start();
+
+                } else {
+                    Toast.makeText(this, "give a name" ,Toast.LENGTH_SHORT).show();
+                }
+                //btnRecord1.setEnabled(false);
+
+            });
+
+            btnPlay2 = (Button)findViewById(R.id.play2Button);
+            btnPlay2.setOnClickListener((view) -> {
+                zandatsu.playAudio();
             });
 
         } else {
