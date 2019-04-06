@@ -62,7 +62,7 @@ public class RecorderActivity extends AppCompatActivity {
 
             btnPlay1 = (Button)findViewById(R.id.play1Button);
             btnPlay1.setOnClickListener((view) -> {
-                recorder1.startPlayingRaw();
+                recorder1.startPlayingRecorder();
             });
 
         } else {

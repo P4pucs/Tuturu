@@ -39,9 +39,9 @@ public class TemplateListActivity extends AppCompatActivity {
         templateListView.setAdapter(templateAdapter);
 
         templateListView.setOnItemClickListener((parent, view, position, id) -> {
-            new Recorder(templateFiles.get(position).getName()).startPlaying();
+            new Recorder(templateFiles.get(position).getName()).startPlayingTemplate();
 
-            //System.out.println( "template name: " + templateFiles.get(position).getName());
+            //System.out.println( "template name: " + templateFiles.get(position).getFileName());
         });
 
     }
@@ -64,9 +64,9 @@ public class TemplateListActivity extends AppCompatActivity {
                 Toast.makeText(this, "Ki az az edit?", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.option_delete:
-            templateAdapter.remove(templateAdapter.getItem(info.position));
-            //Toast.makeText(this, "DELETE", Toast.LENGTH_SHORT).show();
-            return true;
+                templateAdapter.remove(templateAdapter.getItem(info.position));
+                //Toast.makeText(this, "DELETE", Toast.LENGTH_SHORT).show();
+                return true;
             default:
                 return super.onContextItemSelected(item);
         }

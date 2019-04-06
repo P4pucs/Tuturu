@@ -33,7 +33,7 @@ public class Magic {
         List<File> pcmFiles = getFiles();
         Map<String, Boolean> comparison = new HashMap<>();
         for (File file : pcmFiles) {
-            comparison.put(file.getName(), Alchemy.start(file.getName(), recorder.getName()));
+            comparison.put(file.getName(), Alchemy.start(file.getName(), recorder.getFileName()));
         }
         return comparison;
     }
@@ -43,7 +43,7 @@ public class Magic {
     }
 
     public List<File> getFiles() {
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt";
 
         File directory = new File(path);
         File[] allFiles = directory.listFiles();
@@ -52,7 +52,7 @@ public class Magic {
         for (int i = 0; i < allFiles.length; i++) {
             String[] splFileName = allFiles[i].getName().split("\\.");
             if (splFileName.length > 1) {
-                if (splFileName[1].toLowerCase().equals("pcm") && !allFiles[i].getName().equals(recorder.getName())) {
+                if (splFileName[1].toLowerCase().equals("pcm") && !allFiles[i].getName().equals(recorder.getFileName())) {
                     pcmFiles.add(allFiles[i]);
                 }
             }

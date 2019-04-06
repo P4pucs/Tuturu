@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class Recorder {
 
     private String name;
-    private String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + getName();
+    private String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName();
 
     private static final int RECORDER_SAMPLE_RATE = 16000;
     private static final int RECORDER_CHANNELS_IN = AudioFormat.CHANNEL_IN_MONO;
@@ -40,9 +40,14 @@ public class Recorder {
 
     public Recorder() {}
 
-    public String getName() {
+    public String getFileName() {
         return name + ".pcm";
     }
+
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) { this.name = name; }
 
     public void startRecorder() {
@@ -65,7 +70,7 @@ public class Recorder {
 
         FileOutputStream os = null;
         try {
-            os = new FileOutputStream(filePath);
+            os = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -101,29 +106,30 @@ public class Recorder {
         }
     }
 
-    public void startPlayingRaw() {
+    public void startPlayingRecorder() {
         try {
-            PlayShortAudioFileViaAudioTrack(filePath);
+            PlayShortAudioFileViaAudioTrack(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void startPlaying() {
+    public void startPlayingTemplate() {
         try {
-            PlayShortAudioFileViaAudioTrack(filePath);
+            PlayShortAudioFileViaAudioTrack(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getName());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
-    public void PlayShortAudioFileViaAudioTrack(String filePath) throws IOException {
+    private void PlayShortAudioFileViaAudioTrack(String filePath) throws IOException {
         //Reading the file..
         try {
             File file = new File(filePath);
             byte[] byteData = new byte[(int) file.length()];
-
+            System.out.println("play: " + byteData.length);
+            System.out.println("playname: " + getName());
             FileInputStream in;
             try {
                 in = new FileInputStream(file);
@@ -162,13 +168,13 @@ public class Recorder {
         //recordingThread.start();
     }
 
-    public void recordForX() {
+    private void recordForX() {
         //Write the output audio in byte
         byte audioBuffer[] = new byte[bufferSize];
 
         FileOutputStream os = null;
         try {
-            os = new FileOutputStream(filePath);
+            os = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
