@@ -15,6 +15,7 @@ public class Zandatsu {
 
     private Recorder recorder;
     private FileOutputStream fileOutputStream;
+    private int samlpleSize = 28800;
 
     public Zandatsu(String name) {
         recorder = new Recorder(name);
@@ -25,18 +26,23 @@ public class Zandatsu {
     }
 
     public void start() {
-        byte[] audio = null;
-        byte[] audioChunk = new byte[28800];
         try {
-            audio = readAudioFile();
-            fileOutputStream = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
-                    getAbsolutePath() + "/sajt/" + recorder.getName() + "cut.pcm");
+            byte[] audio = readAudioFile();
 
-            for (int i=0;i<audioChunk.length;i++) {
-                audioChunk[i] = audio[i];
+            int index = (int)Math.floor(audio.length/samlpleSize);
+            System.out.println("index: " + index);
+            for (int i=0; i<index; i++) {
+                fileOutputStream = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
+                        getAbsolutePath() + "/sajt/" + recorder.getName() + "(" + i + ").pcm");
+                byte[] audioChunk = new byte[samlpleSize];
+                int chunkIndex = 0;
+                System.out.println("haduken");
+                for (int y=samlpleSize*i; y<samlpleSize*(i+1); y++) {
+                    audioChunk[chunkIndex] = audio[y];
+                    chunkIndex++;
+                }
+                fileOutputStream.write(audioChunk, 0, samlpleSize);
             }
-            fileOutputStream.write(audioChunk, 0, audioChunk.length);
-
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -60,7 +66,7 @@ public class Zandatsu {
 
         byte[] byteData = new byte[(int) file.length()];
         System.out.println("file length: " + (int) file.length());
-
+        System.out.println("file name: " + file.getName());
         try {
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
             DataInputStream dis = new DataInputStream(bis);

@@ -58,11 +58,11 @@ public class Recorder {
 
         isRecording = true;
 
-        recordingThread = new Thread(this::writeAudioDataToFile, "AudioRecorder Thread");
+        recordingThread = new Thread(this::writeAudio, "AudioRecorder Thread");
         recordingThread.start();
     }
 
-    public void writeAudioDataToFile() {
+    public void writeAudio() {
         //Write the output audio in byte
 
         byte audioBuffer[] = new byte[bufferSize];
