@@ -26,7 +26,7 @@ public class RecorderActivity extends AppCompatActivity {
 
     private Recorder recorder1;
     private static Button btnRecord1, btnPlay1;
-    private static Button btnRecord2, btnPlay2;
+    private static Button btnRecord2, btnPlay2, btnZandatsu;
 
     private static EditText nameText;
     private static TextView timerText;
@@ -84,15 +84,15 @@ public class RecorderActivity extends AppCompatActivity {
 
             //RECORDER 222222222222222222222
 
-            Zandatsu zandatsu = new Zandatsu("alma");
+            Zandatsu zandatsu = new Zandatsu();
 
             btnRecord2 = (Button)findViewById(R.id.recorder2Button);
             btnRecord2.setText("Record");
             btnRecord2.setOnClickListener((view) -> {
-
                 if (nameText.getText().toString().trim().length() > 0) {
+                    zandatsu.setName(nameText.getText().toString().trim());
+
                     if (btnRecord2.getText().toString().equals("Record")) {
-                        Toast.makeText(this, "Zandatsu" ,Toast.LENGTH_SHORT).show();
                         btnRecord2.setText("Stop");
                         zandatsu.recordAudio();
 
@@ -112,11 +112,17 @@ public class RecorderActivity extends AppCompatActivity {
             btnPlay2 = (Button)findViewById(R.id.play2Button);
             btnPlay2.setText("Play");
             btnPlay2.setOnClickListener((view) -> {
-                if (zandatsu.getName().trim().length() > 0) {
+                if (!zandatsu.getName().equals("")) {
                     zandatsu.playAudio();
                 } else {
                     Toast.makeText(this, "Record has not yet been made" ,Toast.LENGTH_LONG).show();
                 }
+            });
+
+            btnZandatsu = findViewById(R.id.zandatsuButton);
+            btnZandatsu.setOnClickListener((view) -> {
+                Toast.makeText(this, zandatsu.getName() ,Toast.LENGTH_SHORT).show();
+                zandatsu.start();
             });
 
         } else {

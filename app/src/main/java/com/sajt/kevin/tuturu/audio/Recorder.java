@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class Recorder {
 
     //filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName();
-    private String name;
+    private String name = "";
 
     private static final int RECORDER_SAMPLE_RATE = 16000;
     private static final int RECORDER_CHANNELS_IN = AudioFormat.CHANNEL_IN_MONO;
@@ -69,7 +69,7 @@ public class Recorder {
 
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName());
+            fileOutputStream = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/alma/" + getFileName());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -121,7 +121,7 @@ public class Recorder {
         }
     }
 
-    private void PlayAudioFile(String filePath) throws IOException {
+    public void PlayAudioFile(String filePath) throws IOException {
         new Thread(()->{
             try {
                 File file = new File(filePath);

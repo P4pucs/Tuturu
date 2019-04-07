@@ -18,12 +18,15 @@ public class Zandatsu {
 
     public Zandatsu(String name) {
         recorder = new Recorder(name);
+    }
 
+    public Zandatsu() {
+        recorder = new Recorder();
     }
 
     public void start() {
         byte[] audio = null;
-        byte[] audioChunk = new byte[14400]; //28800
+        byte[] audioChunk = new byte[28800];
         try {
             audio = readAudioFile();
             fileOutputStream = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
@@ -33,6 +36,7 @@ public class Zandatsu {
                 audioChunk[i] = audio[i];
             }
             fileOutputStream.write(audioChunk, 0, audioChunk.length);
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -47,8 +51,12 @@ public class Zandatsu {
         return recorder.getName();
     }
 
+    public void setName(String name) {
+        recorder.setName(name);
+    }
+
     private byte[] readAudioFile() throws FileNotFoundException {
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + recorder.getFileName());
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/alma/" + recorder.getFileName());
 
         byte[] byteData = new byte[(int) file.length()];
         System.out.println("file length: " + (int) file.length());
@@ -67,8 +75,13 @@ public class Zandatsu {
     }
 
     public void playAudio() {
-        recorder.startPlayingRecorder();
+        try {
+            recorder.PlayAudioFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/alma/" + getName() + ".pcm");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     public void recordAudio() {
         recorder.startRecorder();
@@ -76,10 +89,6 @@ public class Zandatsu {
 
     public void stopRecordAudio() {
         recorder.stopRecorder();
-    }
-
-    public void setName(String name) {
-        recorder.setName(name);
     }
 
 }
