@@ -17,7 +17,7 @@ public class Alchemy {
     public boolean start() {
 
         boolean match = false;
-        record();
+        recorder.startLoopRecorder(2);
         Map<String, Boolean> comparison = compare();
         for (String s : comparison.keySet()) {
             //System.out.println(s + " : " + comparison.get(s));
@@ -33,14 +33,10 @@ public class Alchemy {
         List<File> pcmFiles = getFiles();
         Map<String, Boolean> comparison = new HashMap<>();
         for (File file : pcmFiles) {
-            comparison.put(file.getName(), Magic.start(file.getName(), recorder.getName() + ".pcm"));
+            comparison.put(file.getName(), Magic.start(file.getName(), recorder.getFileName()));
             //System.out.println("file1: " + file.getName() + " file2: " + recorder.getFileName() + " file2.1: " + recorder.getName());
         }
         return comparison;
-    }
-
-    private void record() {
-        recorder.startRecorder(2);
     }
 
     public List<File> getFiles() {
@@ -54,7 +50,7 @@ public class Alchemy {
         for (File allFile : allFiles) {
             String[] splFileName = allFile.getName().split("\\.");
             if (splFileName.length > 1) {
-                if (splFileName[1].toLowerCase().equals("pcm") && !allFile.getName().equals(recorder.getName() + ".pcm")) {
+                if (splFileName[1].toLowerCase().equals("pcm") && !allFile.getName().equals(recorder.getFileName())) {
                     pcmFiles.add(allFile);
                 }
             }

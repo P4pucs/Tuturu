@@ -18,7 +18,8 @@ import com.sajt.kevin.tuturu.audio.Zandatsu;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicBoolean;
+
+import static com.sajt.kevin.tuturu.settings.SettingsActivity.runAlchemy;
 
 public class RecorderActivity extends AppCompatActivity {
 
@@ -39,78 +40,89 @@ public class RecorderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recorder);
 
         if (checkPermissionFromDevice()) {
-            //RECORDER 111111111111111111
+            //RECORDER Short
             recorderShort = new Recorder();
 
             nameText = findViewById(R.id.nameText);
 
-            btnRecord1 = (Button)findViewById(R.id.recorder1Button);
+            btnRecord1 = findViewById(R.id.recorder1Button);
             timerText = findViewById(R.id.TimerText);
             btnRecord1.setOnClickListener((view) -> {
+                if (!runAlchemy.get()) {
 
-                if (nameText.getText().toString().trim().length() > 0) {
-                    timerText.setText("2");
-                    Timer timer = new Timer();
-                    TimerTask timerTask = new TimerTask() {
-                        int seconds = 1;
-                        @Override
-                        public void run() {
-                            if (seconds == 0) {
-                                timerText.setText("");
-                                timer.cancel();
+                    if (nameText.getText().toString().trim().length() > 0) {
+                        timerText.setText("2");
+                        Timer timer = new Timer();
+                        TimerTask timerTask = new TimerTask() {
+                            int seconds = 1;
+                            @Override
+                            public void run() {
+                                if (seconds == 0) {
+                                    timerText.setText("");
+                                    timer.cancel();
 
-                            } else {
-                                //System.out.println( " seconds: " + Integer.toString(seconds--));
-                                timerText.setText(Integer.toString(seconds--));
+                                } else {
+                                    timerText.setText(Integer.toString(seconds--));
+                                }
                             }
-                        }
-                    };
+                        };
 
-                    Toast.makeText(this, "alma" ,Toast.LENGTH_SHORT).show();
-                    recorderShort.setName(nameText.getText().toString());
-                    timer.schedule(timerTask, 1000 ,1000);
-                    recorderShort.startRecorder(2);
+                        //Toast.makeText(this, "alma" ,Toast.LENGTH_SHORT).show();
+                        timer.schedule(timerTask, 1000 ,1000);
+                        recorderShort.setName(nameText.getText().toString());
+                        recorderShort.startRecorder(2);
 
+                    } else {
+                        Toast.makeText(this, "give a name" ,Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(this, "give a name" ,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Turn of that red switch thingy", Toast.LENGTH_LONG).show();
                 }
-                //btnRecord1.setEnabled(false);
 
             });
 
-            btnPlay1 = (Button)findViewById(R.id.play1Button);
+            btnPlay1 = findViewById(R.id.play1Button);
             btnPlay1.setOnClickListener((view) -> {
-                recorderShort.startPlayingRecorder();
+                if (!recorderShort.getName().equals("")) {
+                    recorderShort.startPlayingRecorder();
+                } else {
+                    Toast.makeText(this, "Record has not yet been made" ,Toast.LENGTH_LONG).show();
+                }
             });
 
-            //RECORDER 222222222222222222222
+            //RECORDER Long
 
             zandatsu = new Zandatsu();
 
-            btnRecord2 = (Button)findViewById(R.id.recorder2Button);
+            btnRecord2 = findViewById(R.id.recorder2Button);
             btnRecord2.setText("Record");
             btnRecord2.setOnClickListener((view) -> {
-                if (nameText.getText().toString().trim().length() > 0) {
-                    zandatsu.setName(nameText.getText().toString().trim());
+                if (!runAlchemy.get()) {
 
-                    if (btnRecord2.getText().toString().equals("Record")) {
-                        btnRecord2.setText("Stop");
-                        zandatsu.recordAudio();
+                    if (nameText.getText().toString().trim().length() > 0) {
+                        zandatsu.setName(nameText.getText().toString().trim());
 
-                    } else if (btnRecord2.getText().toString().equals("Stop")) {
-                        btnRecord2.setText("Record");
-                        zandatsu.stopRecordAudio();
+                        if (btnRecord2.getText().toString().equals("Record")) {
+                            btnRecord2.setText("Stop");
+                            zandatsu.recordAudio();
+
+                        } else if (btnRecord2.getText().toString().equals("Stop")) {
+                            btnRecord2.setText("Record");
+                            zandatsu.stopRecordAudio();
+                        } else {
+                            btnRecord2.setText("Record");
+                            Toast.makeText(this, "WTF" ,Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        btnRecord2.setText("Record");
-                        Toast.makeText(this, "WTF" ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "give a name" ,Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(this, "give a name" ,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Turn of that red switch thingy", Toast.LENGTH_LONG).show();
                 }
 
             });
 
-            btnPlay2 = (Button)findViewById(R.id.play2Button);
+            btnPlay2 = findViewById(R.id.play2Button);
             btnPlay2.setText("Play");
             btnPlay2.setOnClickListener((view) -> {
                 if (!zandatsu.getName().equals("")) {
@@ -122,7 +134,7 @@ public class RecorderActivity extends AppCompatActivity {
 
             btnZandatsu = findViewById(R.id.zandatsuButton);
             btnZandatsu.setOnClickListener((view) -> {
-                Toast.makeText(this, zandatsu.getName() ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "done" ,Toast.LENGTH_SHORT).show();
                 zandatsu.start();
             });
 

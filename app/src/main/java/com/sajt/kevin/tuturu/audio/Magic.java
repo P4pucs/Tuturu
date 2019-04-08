@@ -74,7 +74,6 @@ public class Magic {
         return Ys;
     }
 
-    // reads raw audio file into byte array
     private static byte[] readAudioFile(String audioFileName) {
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
                 getAbsolutePath() + "/sajt/" + audioFileName); //+ ".pcm
@@ -91,10 +90,9 @@ public class Magic {
         }
 
         return byteData;
-
     }
 
-    public static double[] toDouble(byte[] a)
+    private static double[] toDouble(byte[] a)
     {
         double[] y = new double[a.length];
 

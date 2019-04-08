@@ -43,6 +43,10 @@ public class Recorder {
         return name;
     }
 
+    public String getFileName() {
+        return name + ".pcm";
+    }
+
     public void setName(String name) { this.name = name; }
 
     public void startRecorder() {
@@ -65,7 +69,7 @@ public class Recorder {
         FileOutputStream fileOutputStream = null;
         try {
             fileOutputStream = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
-                    getAbsolutePath() + "/sajt/alma" + getName() + ".pcm");
+                    getAbsolutePath() + "/sajt/alma/" + getFileName());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -106,7 +110,7 @@ public class Recorder {
     public void startPlayingRecorder() {
         try {
             PlayAudioFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
-                    getAbsolutePath() + "/sajt/" + getName() + ".pcm");
+                    getAbsolutePath() + "/sajt/" + getFileName());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -166,6 +170,12 @@ public class Recorder {
         }).start();
     }
 
+    public void startLoopRecorder(long time) {
+        recorder = new AudioRecord(AUDIO_SOURCE, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_IN, RECORDER_AUDIO_ENCODING, bufferSize);
+        recorder.startRecording();
+        writeShortAudio(time);
+    }
+
     private void writeShortAudio(long time) {
         //Write the output audio in byte
         byte audioBuffer[] = new byte[bufferSize];
@@ -173,7 +183,7 @@ public class Recorder {
         FileOutputStream os = null;
         try {
             os = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
-                    getAbsolutePath() + "/sajt/" + getName() + ".pcm");
+                    getAbsolutePath() + "/sajt/" + getFileName());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
