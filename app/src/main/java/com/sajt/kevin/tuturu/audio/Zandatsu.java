@@ -60,7 +60,8 @@ public class Zandatsu {
     }
 
     private byte[] readAudioFile() throws FileNotFoundException {
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/alma/" + recorder.getFileName());
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
+                getAbsolutePath() + "/sajt/alma/" + recorder.getName() + ".pcm");
 
         byte[] byteData = new byte[(int) file.length()];
 

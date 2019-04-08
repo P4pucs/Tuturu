@@ -24,7 +24,8 @@ public class RecorderActivity extends AppCompatActivity {
 
     final int REQUEST_PERMISSION_CODE = 1000;
 
-    private Recorder recorder1;
+    private Recorder recorderShort;
+    private Zandatsu zandatsu;
     private static Button btnRecord1, btnPlay1;
     private static Button btnRecord2, btnPlay2, btnZandatsu;
 
@@ -39,7 +40,7 @@ public class RecorderActivity extends AppCompatActivity {
 
         if (checkPermissionFromDevice()) {
             //RECORDER 111111111111111111
-            recorder1 = new Recorder();
+            recorderShort = new Recorder();
 
             nameText = findViewById(R.id.nameText);
 
@@ -66,9 +67,9 @@ public class RecorderActivity extends AppCompatActivity {
                     };
 
                     Toast.makeText(this, "alma" ,Toast.LENGTH_SHORT).show();
-                    recorder1.setName(nameText.getText().toString());
+                    recorderShort.setName(nameText.getText().toString());
                     timer.schedule(timerTask, 1000 ,1000);
-                    recorder1.startRecordForX();
+                    recorderShort.startRecorder(2);
 
                 } else {
                     Toast.makeText(this, "give a name" ,Toast.LENGTH_SHORT).show();
@@ -79,12 +80,12 @@ public class RecorderActivity extends AppCompatActivity {
 
             btnPlay1 = (Button)findViewById(R.id.play1Button);
             btnPlay1.setOnClickListener((view) -> {
-                recorder1.startPlayingRecorder();
+                recorderShort.startPlayingRecorder();
             });
 
             //RECORDER 222222222222222222222
 
-            Zandatsu zandatsu = new Zandatsu();
+            zandatsu = new Zandatsu();
 
             btnRecord2 = (Button)findViewById(R.id.recorder2Button);
             btnRecord2.setText("Record");

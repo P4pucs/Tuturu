@@ -39,10 +39,6 @@ public class Recorder {
 
     public Recorder() {}
 
-    public String getFileName() {
-        return name + ".pcm";
-    }
-
     public String getName() {
         return name;
     }
@@ -58,19 +54,18 @@ public class Recorder {
 
         isRecording = true;
 
-        recordingThread = new Thread(this::writeAudio, "AudioRecorder Thread");
+        recordingThread = new Thread(this::writeLongAudio, "AudioRecorder Thread");
         recordingThread.start();
     }
 
-    public void writeAudio() {
-        //Write the output audio in byte
+    private void writeLongAudio() {
 
         byte audioBuffer[] = new byte[bufferSize];
 
         FileOutputStream fileOutputStream = null;
         try {
             fileOutputStream = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
-                    getAbsolutePath() + "/sajt/alma/" + getFileName());
+                    getAbsolutePath() + "/sajt/alma" + getName() + ".pcm");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -80,12 +75,14 @@ public class Recorder {
             recorder.read(audioBuffer, 0, bufferSize);
             try {
                 //  writes the data to file from buffer stores the voice buffer
+                assert fileOutputStream != null;
                 fileOutputStream.write(audioBuffer, 0, bufferSize);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         try {
+            assert fileOutputStream != null;
             fileOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -109,7 +106,7 @@ public class Recorder {
     public void startPlayingRecorder() {
         try {
             PlayAudioFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
-                    getAbsolutePath() + "/sajt/" + getFileName());
+                    getAbsolutePath() + "/sajt/" + getName() + ".pcm");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -161,30 +158,31 @@ public class Recorder {
 
     }
 
-    public void startRecordForX() {
+    public void startRecorder(long time) {
         new Thread(() -> {
             recorder = new AudioRecord(AUDIO_SOURCE, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_IN, RECORDER_AUDIO_ENCODING, bufferSize);
             recorder.startRecording();
-            recordForX();
+            writeShortAudio(time);
         }).start();
     }
 
-    private void recordForX() {
+    private void writeShortAudio(long time) {
         //Write the output audio in byte
         byte audioBuffer[] = new byte[bufferSize];
 
         FileOutputStream os = null;
         try {
             os = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
-                    getAbsolutePath() + "/sajt/" + getFileName());
+                    getAbsolutePath() + "/sajt/" + getName() + ".pcm");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        long endTime = System.nanoTime() + TimeUnit.NANOSECONDS.convert((long) 2, TimeUnit.SECONDS);
+        long endTime = System.nanoTime() + TimeUnit.NANOSECONDS.convert(time, TimeUnit.SECONDS);
         while ( System.nanoTime() < endTime ){
             recorder.read(audioBuffer, 0, bufferSize);
             try {
+                assert os != null;
                 os.write(audioBuffer, 0, bufferSize);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -195,6 +193,7 @@ public class Recorder {
             recorder.release();
             recorder = null;
             //recordingThread = null;
+            assert os != null;
             os.close();
             //System.out.println("recorder DONE");
         } catch (IOException e) {
