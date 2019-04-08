@@ -76,10 +76,10 @@ public class Magic {
 
     // reads raw audio file into byte array
     private static byte[] readAudioFile(String audioFileName) {
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + audioFileName); //+ ".pcm
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
+                getAbsolutePath() + "/sajt/" + audioFileName); //+ ".pcm
 
         byte[] byteData = new byte[(int) file.length()];
-
         try {
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
             DataInputStream dis = new DataInputStream(bis);

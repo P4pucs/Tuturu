@@ -21,7 +21,7 @@ public class SettingsActivity extends PreferenceActivity {
 
     final int REQUEST_PERMISSION_CODE = 1000;
 
-    static AtomicBoolean runMagic = new AtomicBoolean(false);
+    static AtomicBoolean runAlchemy = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,6 @@ public class SettingsActivity extends PreferenceActivity {
                 new MainSettingsFragment()).commit();
 
         if (checkPermissionFromDevice()) {
-        //RECORDER 111111111111111111
 
         new Thread(()-> {
 
@@ -41,7 +40,7 @@ public class SettingsActivity extends PreferenceActivity {
             Alchemy alchemy = new Alchemy();
 
             while (true) {
-                if (runMagic.get()) {
+                if (runAlchemy.get()) {
                     if (alchemy.start()) {
                         mp.start();
                     }
@@ -70,17 +69,17 @@ public class SettingsActivity extends PreferenceActivity {
 
             SwitchPreference magicSwitch = (SwitchPreference) findPreference("magic_key");
             if (magicSwitch.isChecked()) {
-                runMagic.set(magicSwitch.isChecked());
+                runAlchemy.set(magicSwitch.isChecked());
             } else {
-                runMagic.set(magicSwitch.isChecked());
+                runAlchemy.set(magicSwitch.isChecked());
             }
 
                 magicSwitch.setOnPreferenceChangeListener((arg0, isMagicOnObject) -> {
                     boolean isMagicOn = (Boolean) isMagicOnObject;
                     if (isMagicOn) {
-                        runMagic.set(true);
+                        runAlchemy.set(true);
                     } else {
-                        runMagic.set(false);
+                        runAlchemy.set(false);
                     }
                     return true;
                 });

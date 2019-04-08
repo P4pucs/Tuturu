@@ -69,7 +69,8 @@ public class Recorder {
 
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/alma/" + getFileName());
+            fileOutputStream = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
+                    getAbsolutePath() + "/sajt/alma/" + getFileName());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -107,7 +108,8 @@ public class Recorder {
 
     public void startPlayingRecorder() {
         try {
-            PlayAudioFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName());
+            PlayAudioFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
+                    getAbsolutePath() + "/sajt/" + getFileName());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -115,7 +117,8 @@ public class Recorder {
 
     public void startPlayingTemplate() {
         try {
-            PlayAudioFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getName());
+            PlayAudioFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
+                    getAbsolutePath() + "/sajt/" + getName());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -138,7 +141,8 @@ public class Recorder {
                 // Set and push to audio track..
                 int intSize = android.media.AudioTrack.getMinBufferSize(RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_OUT, RECORDER_AUDIO_ENCODING);
 
-                AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_OUT, RECORDER_AUDIO_ENCODING, intSize, AudioTrack.MODE_STREAM);
+                AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_OUT,
+                        RECORDER_AUDIO_ENCODING, intSize, AudioTrack.MODE_STREAM);
 
                 if (at != null) {
                     at.play();
@@ -171,7 +175,8 @@ public class Recorder {
 
         FileOutputStream os = null;
         try {
-            os = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName());
+            os = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
+                    getAbsolutePath() + "/sajt/" + getFileName());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

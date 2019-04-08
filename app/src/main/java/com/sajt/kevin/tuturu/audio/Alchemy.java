@@ -12,7 +12,7 @@ public class Alchemy {
 
     private Recorder recorder;
 
-    public Alchemy() { recorder = new Recorder("loooop"); }
+    public Alchemy() { recorder = new Recorder("looop"); }
 
     public boolean start() {
 
@@ -34,6 +34,7 @@ public class Alchemy {
         Map<String, Boolean> comparison = new HashMap<>();
         for (File file : pcmFiles) {
             comparison.put(file.getName(), Magic.start(file.getName(), recorder.getFileName()));
+            //System.out.println("file1: " + file.getName() + " file2: " + recorder.getFileName() + " file2.1: " + recorder.getName());
         }
         return comparison;
     }
@@ -43,7 +44,8 @@ public class Alchemy {
     }
 
     public List<File> getFiles() {
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/";
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
+                getAbsolutePath() + "/sajt/";
 
         File directory = new File(path);
         File[] allFiles = directory.listFiles();
