@@ -12,7 +12,9 @@ public class Alchemy {
 
     private Recorder recorder;
 
-    public Alchemy() { recorder = new Recorder("looop"); }
+    public Alchemy() {
+        recorder = new Recorder("looop");
+    }
 
     public boolean start() {
 

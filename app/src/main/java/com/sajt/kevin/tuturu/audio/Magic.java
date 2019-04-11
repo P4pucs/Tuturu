@@ -24,7 +24,7 @@ public class Magic {
 
         double mse = Utilities.MSE(signal1, signal2, signal1.length);
 
-        System.out.println("MSE: " + mse );
+        System.out.println("MSE: " + mse);
 
         if (mse <= threshold) {
             return true;
@@ -40,7 +40,7 @@ public class Magic {
 
         double mse = Utilities.MSE(signal1, signal2, signal1.length);
 
-        System.out.println("MSE: " + mse );
+        System.out.println("MSE: " + mse);
 
         if (mse <= threshold) {
             return true;
@@ -50,25 +50,24 @@ public class Magic {
     }
 
     // converts byte array to double array
-    private static double[] toDoubleArray(byte[] byteArray){
+    private static double[] toDoubleArray(byte[] byteArray) {
         int SAMPLE_RESOLUTION = 16;
         int BYTES_PER_POINT = SAMPLE_RESOLUTION / 8;
-        int[] vals = new int[byteArray.length/BYTES_PER_POINT];
+        int[] vals = new int[byteArray.length / BYTES_PER_POINT];
         double[] Ys = new double[byteArray.length / BYTES_PER_POINT];
         double[] Xs = new double[byteArray.length / BYTES_PER_POINT];
         double[] Xs2 = new double[byteArray.length / BYTES_PER_POINT];
         byte hByte;
         byte lByte;
 
-        for (int i=0; i<vals.length; i++)
-        {
+        for (int i = 0; i < vals.length; i++) {
             // bit shift the byte buffer into the right variable format
             hByte = byteArray[i * 2 + 1];
             lByte = byteArray[i * 2 + 0];
-            vals[i] = (int)(short)((hByte << 8) | lByte);
+            vals[i] = (int) (short) ((hByte << 8) | lByte);
             Xs[i] = i;
             Ys[i] = vals[i];
-            Xs2[i] = (double)i/Ys.length*16000/1000.0; // units are in kHz
+            Xs2[i] = (double) i / Ys.length * 16000 / 1000.0; // units are in kHz
         }
 
         return Ys;
@@ -83,7 +82,7 @@ public class Magic {
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
             DataInputStream dis = new DataInputStream(bis);
             dis.readFully(byteData);
-        } catch (FileNotFoundException e ) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -92,12 +91,11 @@ public class Magic {
         return byteData;
     }
 
-    private static double[] toDouble(byte[] a)
-    {
+    private static double[] toDouble(byte[] a) {
         double[] y = new double[a.length];
 
-        for(int x = 0; x < y.length; x++)
-            y[x] = (double)a[x];
+        for (int x = 0; x < y.length; x++)
+            y[x] = (double) a[x];
 
         return y;
     }
@@ -114,7 +112,7 @@ public class Magic {
 
         double[] sampleBuffer = new double[nextpowtwo];
 
-        for (int i =0;i<array.length;i++) {
+        for (int i = 0; i < array.length; i++) {
             sampleBuffer[i] = array[i];
         }
         //System.out.println("nextpowoftwo: " + nextpowtwo);
@@ -123,12 +121,12 @@ public class Magic {
 
     private static double[] hamming(double[] signal) {
 
-        double [] newSignal = new double[signal.length];
+        double[] newSignal = new double[signal.length];
         int samples = signal.length / 2;
         double r = Math.PI / samples;
 
-        for (int i = -samples; i<samples; i++) {
-            newSignal[samples+ i] = 0.54 + 0.46 * Math.cos(i * r);
+        for (int i = -samples; i < samples; i++) {
+            newSignal[samples + i] = 0.54 + 0.46 * Math.cos(i * r);
         }
 
         return newSignal;
@@ -138,7 +136,7 @@ public class Magic {
 
         double[] newSignal = new double[signal.length];
         for (int i = 0; i < signal.length; i++) {
-            double multiplier = 0.5 * (1 - Math.cos(2*Math.PI*i/signal.length-1));
+            double multiplier = 0.5 * (1 - Math.cos(2 * Math.PI * i / signal.length - 1));
             newSignal[i] = multiplier * signal[i];
         }
         return newSignal;

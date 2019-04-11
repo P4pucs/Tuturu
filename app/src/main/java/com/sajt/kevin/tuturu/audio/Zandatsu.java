@@ -29,14 +29,14 @@ public class Zandatsu {
         try {
             byte[] audio = readAudioFile();
 
-            int index = (int)Math.floor(audio.length/samlpleSize);
+            int index = (int) Math.floor(audio.length / samlpleSize);
 
-            for (int i=0; i<index; i++) {
+            for (int i = 0; i < index; i++) {
                 fileOutputStream = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
                         getAbsolutePath() + "/sajt/" + recorder.getName() + "(" + i + ").pcm");
                 byte[] audioChunk = new byte[samlpleSize];
                 int chunkIndex = 0;
-                for (int y=samlpleSize*i; y<samlpleSize*(i+1); y++) {
+                for (int y = samlpleSize * i; y < samlpleSize * (i + 1); y++) {
                     audioChunk[chunkIndex] = audio[y];
                     chunkIndex++;
                 }
@@ -51,7 +51,7 @@ public class Zandatsu {
 
     }
 
-    public String getName(){
+    public String getName() {
         return recorder.getName();
     }
 
@@ -69,7 +69,7 @@ public class Zandatsu {
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
             DataInputStream dis = new DataInputStream(bis);
             dis.readFully(byteData);
-        } catch (FileNotFoundException e ) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();

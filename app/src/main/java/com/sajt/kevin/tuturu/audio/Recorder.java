@@ -17,16 +17,13 @@ import java.util.concurrent.TimeUnit;
 
 public class Recorder {
 
-    //filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName();
-    private String name = "";
-
     private static final int RECORDER_SAMPLE_RATE = 16000;
     private static final int RECORDER_CHANNELS_IN = AudioFormat.CHANNEL_IN_MONO;
     private static final int RECORDER_CHANNELS_OUT = AudioFormat.CHANNEL_OUT_MONO;
     private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_8BIT;
-
     private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
-
+    //filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName();
+    private String name = "";
     private AudioRecord recorder = null;
     private Thread recordingThread = null;
     private boolean isRecording = false;
@@ -35,19 +32,24 @@ public class Recorder {
     // Initialize minimum buffer size in bytes.
     private int bufferSize = AudioRecord.getMinBufferSize(RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_IN, RECORDER_AUDIO_ENCODING);
 
-    public Recorder(String name) { this.name = name; }
+    public Recorder(String name) {
+        this.name = name;
+    }
 
-    public Recorder() {}
+    public Recorder() {
+    }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getFileName() {
         return name + ".pcm";
     }
-
-    public void setName(String name) { this.name = name; }
 
     public void startRecorder() {
 
@@ -126,7 +128,7 @@ public class Recorder {
     }
 
     public void PlayAudioFile(String filePath) throws IOException {
-        new Thread(()->{
+        new Thread(() -> {
             try {
                 File file = new File(filePath);
                 byte[] byteData = new byte[(int) file.length()];
@@ -189,7 +191,7 @@ public class Recorder {
         }
 
         long endTime = System.nanoTime() + TimeUnit.NANOSECONDS.convert(time, TimeUnit.SECONDS);
-        while ( System.nanoTime() < endTime ){
+        while (System.nanoTime() < endTime) {
             recorder.read(audioBuffer, 0, bufferSize);
             try {
                 assert os != null;

@@ -19,9 +19,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SettingsActivity extends PreferenceActivity {
 
-    final int REQUEST_PERMISSION_CODE = 1000;
-
     static AtomicBoolean runAlchemy = new AtomicBoolean(false);
+    final int REQUEST_PERMISSION_CODE = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,60 +31,33 @@ public class SettingsActivity extends PreferenceActivity {
 
         if (checkPermissionFromDevice()) {
 
-        new Thread(()-> {
+            new Thread(() -> {
 
-            MediaPlayer mp;
-            mp = MediaPlayer.create(this, R.raw.beep);
+                MediaPlayer mp;
+                mp = MediaPlayer.create(this, R.raw.beep);
 
-            Alchemy alchemy = new Alchemy();
+                Alchemy alchemy = new Alchemy();
 
-            while (true) {
-                if (runAlchemy.get()) {
-                    if (alchemy.start()) {
-                        mp.start();
-                    }
-                } else {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                while (true) {
+                    if (runAlchemy.get()) {
+                        if (alchemy.start()) {
+                            mp.start();
+                        }
+                    } else {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-            }
-        }).start();
+            }).start();
 
         } else {
             requestPermission();
         }
 
     }
-
-    public static class MainSettingsFragment extends PreferenceFragment {
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.preferences);
-
-            SwitchPreference magicSwitch = (SwitchPreference) findPreference("magic_key");
-            if (magicSwitch.isChecked()) {
-                runAlchemy.set(magicSwitch.isChecked());
-            } else {
-                runAlchemy.set(magicSwitch.isChecked());
-            }
-
-                magicSwitch.setOnPreferenceChangeListener((arg0, isMagicOnObject) -> {
-                    boolean isMagicOn = (Boolean) isMagicOnObject;
-                    if (isMagicOn) {
-                        runAlchemy.set(true);
-                    } else {
-                        runAlchemy.set(false);
-                    }
-                    return true;
-                });
-            }
-        }
-
 
     private void requestPermission() {
         ActivityCompat.requestPermissions(this, new String[]{
@@ -107,12 +79,38 @@ public class SettingsActivity extends PreferenceActivity {
         switch (requestCode) {
             case REQUEST_PERMISSION_CODE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(SettingsActivity.this,"Permission granted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, "Permission granted", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(SettingsActivity.this,"Permission denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, "Permission denied", Toast.LENGTH_SHORT).show();
                 }
             }
             break;
+        }
+    }
+
+    public static class MainSettingsFragment extends PreferenceFragment {
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.preferences);
+
+            SwitchPreference magicSwitch = (SwitchPreference) findPreference("magic_key");
+            if (magicSwitch.isChecked()) {
+                runAlchemy.set(magicSwitch.isChecked());
+            } else {
+                runAlchemy.set(magicSwitch.isChecked());
+            }
+
+            magicSwitch.setOnPreferenceChangeListener((arg0, isMagicOnObject) -> {
+                boolean isMagicOn = (Boolean) isMagicOnObject;
+                if (isMagicOn) {
+                    runAlchemy.set(true);
+                } else {
+                    runAlchemy.set(false);
+                }
+                return true;
+            });
         }
     }
 

@@ -23,16 +23,13 @@ import static com.sajt.kevin.tuturu.settings.SettingsActivity.runAlchemy;
 
 public class RecorderActivity extends AppCompatActivity {
 
-    final int REQUEST_PERMISSION_CODE = 1000;
-
-    private Recorder recorderShort;
-    private Zandatsu zandatsu;
     private static Button btnRecord1, btnPlay1;
     private static Button btnRecord2, btnPlay2, btnZandatsu;
-
     private static EditText nameText;
     private static TextView timerText;
-
+    final int REQUEST_PERMISSION_CODE = 1000;
+    private Recorder recorderShort;
+    private Zandatsu zandatsu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +52,7 @@ public class RecorderActivity extends AppCompatActivity {
                         Timer timer = new Timer();
                         TimerTask timerTask = new TimerTask() {
                             int seconds = 1;
+
                             @Override
                             public void run() {
                                 if (seconds == 0) {
@@ -68,12 +66,12 @@ public class RecorderActivity extends AppCompatActivity {
                         };
 
                         //Toast.makeText(this, "alma" ,Toast.LENGTH_SHORT).show();
-                        timer.schedule(timerTask, 1000 ,1000);
+                        timer.schedule(timerTask, 1000, 1000);
                         recorderShort.setName(nameText.getText().toString());
                         recorderShort.startRecorder(2);
 
                     } else {
-                        Toast.makeText(this, "give a name" ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "give a name", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(this, "Turn of that red switch thingy", Toast.LENGTH_LONG).show();
@@ -86,7 +84,7 @@ public class RecorderActivity extends AppCompatActivity {
                 if (!recorderShort.getName().equals("")) {
                     recorderShort.startPlayingRecorder();
                 } else {
-                    Toast.makeText(this, "Record has not yet been made" ,Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Record has not yet been made", Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -111,10 +109,10 @@ public class RecorderActivity extends AppCompatActivity {
                             zandatsu.stopRecordAudio();
                         } else {
                             btnRecord2.setText("Record");
-                            Toast.makeText(this, "WTF" ,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "WTF", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(this, "give a name" ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "give a name", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(this, "Turn of that red switch thingy", Toast.LENGTH_LONG).show();
@@ -128,13 +126,13 @@ public class RecorderActivity extends AppCompatActivity {
                 if (!zandatsu.getName().equals("")) {
                     zandatsu.playAudio();
                 } else {
-                    Toast.makeText(this, "Record has not yet been made" ,Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Record has not yet been made", Toast.LENGTH_LONG).show();
                 }
             });
 
             btnZandatsu = findViewById(R.id.zandatsuButton);
             btnZandatsu.setOnClickListener((view) -> {
-                Toast.makeText(this, "done" ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "done", Toast.LENGTH_SHORT).show();
                 zandatsu.start();
             });
 
@@ -163,9 +161,9 @@ public class RecorderActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_PERMISSION_CODE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(RecorderActivity.this,"Permission granted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RecorderActivity.this, "Permission granted", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(RecorderActivity.this,"Permission denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RecorderActivity.this, "Permission denied", Toast.LENGTH_SHORT).show();
                 }
             }
             break;
