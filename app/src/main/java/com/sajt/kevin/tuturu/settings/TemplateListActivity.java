@@ -1,10 +1,12 @@
 package com.sajt.kevin.tuturu.settings;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -64,7 +66,15 @@ public class TemplateListActivity extends AppCompatActivity {
                 Toast.makeText(this, "Ki az az edit?", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.option_delete:
-                templateAdapter.remove(templateAdapter.getItem(info.position));
+
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
+                        getAbsolutePath() + "/sajt/" + templateAdapter.getItem(info.position).getName());
+                boolean isDeleted = file.delete();
+                if (isDeleted) {
+                    templateAdapter.remove(templateAdapter.getItem(info.position));
+                } else {
+                    Toast.makeText(TemplateListActivity.this, "error", Toast.LENGTH_SHORT).show();
+                }
                 //Toast.makeText(this, "DELETE", Toast.LENGTH_SHORT).show();
                 return true;
             default:
