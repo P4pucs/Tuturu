@@ -1,7 +1,6 @@
 package com.sajt.kevin.tuturu.settings;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +8,6 @@ import android.text.InputType;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.accessibility.AccessibilityManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -30,7 +28,7 @@ public class TemplateListActivity extends AppCompatActivity {
     private List<File> templateFiles;
     private List<String> templateNames;
     private ArrayAdapter<File> templateAdapter;
-    private String m_Text = "";
+    private String newName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +40,8 @@ public class TemplateListActivity extends AppCompatActivity {
 
         templateFiles = new Alchemy().getFiles();
 
-        templateAdapter = new ArrayAdapter(this, android.R.layout.select_dialog_item, templateFiles);
+        templateAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, templateFiles);
+
         templateListView.setAdapter(templateAdapter);
 
         templateListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -78,18 +77,18 @@ public class TemplateListActivity extends AppCompatActivity {
                 builder.setView(input);
 
                 builder.setPositiveButton("OK", (dialog, which) -> {
-                    m_Text = input.getText().toString();
+                    newName = input.getText().toString();
                     File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
                             getAbsolutePath() + "/sajt/");
                     if(dir.exists()){
                         File from = new File(dir,templateAdapter.getItem(info.position).getName());
-                        File to = new File(dir,m_Text + ".pcm");
+                        File to = new File(dir, newName + ".pcm");
                         if(from.exists()) {
                             from.renameTo(to);
-                            templateFiles.set(info.position, new File(to.getName()));
+                            templateFiles.set(info.position, new File(dir + "/" + to.getName()));
                             templateAdapter.notifyDataSetChanged();
                             dialog.dismiss();
-                            Toast.makeText(this, "Renamed to " + m_Text, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Renamed to " + newName, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
