@@ -25,30 +25,35 @@ public class Zandatsu {
         recorder = new Recorder();
     }
 
-    public void start() {
+    public boolean start() {
         try {
             byte[] audio = readAudioFile();
 
             int index = (int) Math.floor(audio.length / samlpleSize);
-
-            for (int i = 0; i < index; i++) {
-                fileOutputStream = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
-                        getAbsolutePath() + "/sajt/" + recorder.getName() + "(" + i + ").pcm");
-                byte[] audioChunk = new byte[samlpleSize];
-                int chunkIndex = 0;
-                for (int y = samlpleSize * i; y < samlpleSize * (i + 1); y++) {
-                    audioChunk[chunkIndex] = audio[y];
-                    chunkIndex++;
+            if (audio.length > 0) {
+                for (int i = 0; i < index; i++) {
+                    fileOutputStream = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
+                            getAbsolutePath() + "/sajt/" + recorder.getName() + "(" + i + ").pcm");
+                    byte[] audioChunk = new byte[samlpleSize];
+                    int chunkIndex = 0;
+                    for (int y = samlpleSize * i; y < samlpleSize * (i + 1); y++) {
+                        audioChunk[chunkIndex] = audio[y];
+                        chunkIndex++;
+                    }
+                    fileOutputStream.write(audioChunk, 0, samlpleSize);
                 }
-                fileOutputStream.write(audioChunk, 0, samlpleSize);
+            } else {
+                return false;
             }
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
-
+        return true;
     }
 
     public String getName() {

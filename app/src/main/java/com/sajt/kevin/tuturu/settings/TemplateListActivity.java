@@ -1,14 +1,18 @@
 package com.sajt.kevin.tuturu.settings;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,6 +30,7 @@ public class TemplateListActivity extends AppCompatActivity {
     private List<File> templateFiles;
     private List<String> templateNames;
     private ArrayAdapter<File> templateAdapter;
+    private String m_Text = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +42,7 @@ public class TemplateListActivity extends AppCompatActivity {
 
         templateFiles = new Alchemy().getFiles();
 
-        templateAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, templateFiles);
+        templateAdapter = new ArrayAdapter(this, android.R.layout.select_dialog_item, templateFiles);
         templateListView.setAdapter(templateAdapter);
 
         templateListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -63,7 +68,35 @@ public class TemplateListActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.option_edit:
-                Toast.makeText(this, "Ki az az edit?", Toast.LENGTH_SHORT).show();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("New name");
+
+                final EditText input = new EditText(this);
+
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                builder.setPositiveButton("OK", (dialog, which) -> {
+                    m_Text = input.getText().toString();
+                    File dir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
+                            getAbsolutePath() + "/sajt/");
+                    if(dir.exists()){
+                        File from = new File(dir,templateAdapter.getItem(info.position).getName());
+                        File to = new File(dir,m_Text + ".pcm");
+                        if(from.exists()) {
+                            from.renameTo(to);
+                            templateFiles.set(info.position, new File(to.getName()));
+                            templateAdapter.notifyDataSetChanged();
+                            dialog.dismiss();
+                            Toast.makeText(this, "Renamed to " + m_Text, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+                builder.show();
+
                 return true;
             case R.id.option_delete:
 

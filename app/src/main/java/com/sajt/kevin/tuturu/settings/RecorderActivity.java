@@ -132,8 +132,12 @@ public class RecorderActivity extends AppCompatActivity {
 
             btnZandatsu = findViewById(R.id.zandatsuButton);
             btnZandatsu.setOnClickListener((view) -> {
-                Toast.makeText(this, "done", Toast.LENGTH_SHORT).show();
-                zandatsu.start();
+
+                if (zandatsu.start()) {
+                    Toast.makeText(this, "done", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "RAIDEEEEN", Toast.LENGTH_SHORT).show();
+                }
             });
 
         } else {
