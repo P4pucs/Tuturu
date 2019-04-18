@@ -39,7 +39,7 @@ public class MFCC {
         frequency = Nyquist;
         delta = mel(frequency);
         int i = 0;
-        double cFreq = 0;
+        double cFreq; //=0
 
         while (frequency > 10) {
             frequency -= (delta / 2);
@@ -73,7 +73,7 @@ public class MFCC {
                 System.Diagnostics.Debug.WriteLine("mel:" + Convert.ToString(mel(melWorkingFrequencies[i])));
                 System.Diagnostics.Debug.WriteLine("segment:"+Convert.ToString(segment));*/
 
-            start = (segment - (int) Math.floor(segment / 2));
+            start = (segment - (int) Math.floor(segment*0.5));
             end = (segment + (segment / 2));
             //System.Diagnostics.Debug.WriteLine("\tstart:" + Convert.ToString(start) + "\tend:" + Convert.ToString(end));
 
@@ -97,10 +97,10 @@ public class MFCC {
     }
 
     public static double mel(double value) {
-        return (2595.0 * (double) Math.log10(1.0 + value / 700.0));
+        return (2595.0 * Math.log10(1.0 + value / 700.0));
     }
 
     public static double melinv(double value) {
-        return (700.0 * ((double) Math.pow(10.0, value / 2595.0) - 1.0));
+        return (700.0 * (Math.pow(10.0, value / 2595.0) - 1.0));
     }
 }

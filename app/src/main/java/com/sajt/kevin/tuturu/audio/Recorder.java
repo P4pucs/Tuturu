@@ -133,28 +133,25 @@ public class Recorder {
                 File file = new File(filePath);
                 byte[] byteData = new byte[(int) file.length()];
 
-                FileInputStream in;
+                FileInputStream fileInputStream;
                 try {
-                    in = new FileInputStream(file);
-                    in.read(byteData);
-                    in.close();
+                    fileInputStream = new FileInputStream(file);
+                    fileInputStream.read(byteData);
+                    fileInputStream.close();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
                 // Set and push to audio track..
                 int intSize = android.media.AudioTrack.getMinBufferSize(RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_OUT, RECORDER_AUDIO_ENCODING);
 
-                AudioTrack at = new AudioTrack(AudioManager.STREAM_MUSIC, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_OUT,
+                AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, RECORDER_SAMPLE_RATE, RECORDER_CHANNELS_OUT,
                         RECORDER_AUDIO_ENCODING, intSize, AudioTrack.MODE_STREAM);
 
-                if (at != null) {
-                    at.play();
-                    // Write the byte array to the track
-                    at.write(byteData, 0, byteData.length);
-                    at.stop();
-                    at.release();
-                } else
-                    Log.d("audio recorder", "audio track is not initialised ");
+                audioTrack.play();
+                // Write the byte array to the track
+                audioTrack.write(byteData, 0, byteData.length);
+                audioTrack.stop();
+                audioTrack.release();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (Exception e) {
