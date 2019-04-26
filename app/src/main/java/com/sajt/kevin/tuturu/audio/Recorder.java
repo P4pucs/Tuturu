@@ -22,6 +22,7 @@ public class Recorder {
     private static final int RECORDER_CHANNELS_OUT = AudioFormat.CHANNEL_OUT_MONO;
     private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_8BIT;
     private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
+
     //filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName();
     private String name = "";
     private AudioRecord recorder = null;
@@ -65,7 +66,6 @@ public class Recorder {
     }
 
     private void writeLongAudio() {
-
         byte audioBuffer[] = new byte[bufferSize];
 
         FileOutputStream fileOutputStream = null;
@@ -95,7 +95,7 @@ public class Recorder {
         }
     }
 
-    public void stopRecorder() {
+    public boolean stopRecorder() {
         try {
             if (null != recorder) {
                 isRecording = false;
@@ -103,10 +103,13 @@ public class Recorder {
                 recorder.release();
                 recorder = null;
                 recordingThread = null;
+                return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
+        return false;
     }
 
     public void startPlayingRecorder() {
@@ -207,7 +210,6 @@ public class Recorder {
             //recordingThread = null;
             assert os != null;
             os.close();
-            //System.out.println("recorder DONE");
         } catch (IOException e) {
             e.printStackTrace();
         }

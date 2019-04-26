@@ -55,15 +55,6 @@
         android:layout_marginTop="389dp"
         android:text="Zandatsu" />
 
-    <Button
-        android:id="@+id/linkStartButton"
-        android:layout_width="148dp"
-        android:layout_height="62dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="28dp"
-        android:text="Link Start" />
-
     <EditText
         android:id="@+id/nameText"
         android:layout_width="wrap_content"
