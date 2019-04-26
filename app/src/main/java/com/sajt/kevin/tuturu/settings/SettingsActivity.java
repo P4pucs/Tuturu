@@ -34,7 +34,7 @@ public class SettingsActivity extends PreferenceActivity {
             new Thread(() -> {
 
                 MediaPlayer mp;
-                mp = MediaPlayer.create(this, R.raw.beep);
+                mp = MediaPlayer.create(this, R.raw.tuturu);
 
                 Alchemy alchemy = new Alchemy();
 
@@ -42,6 +42,11 @@ public class SettingsActivity extends PreferenceActivity {
                     if (runAlchemy.get()) {
                         if (alchemy.start()) {
                             mp.start();
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     } else {
                         try {
