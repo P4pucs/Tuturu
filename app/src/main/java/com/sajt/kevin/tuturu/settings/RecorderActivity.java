@@ -3,6 +3,7 @@ package com.sajt.kevin.tuturu.settings;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -16,6 +17,7 @@ import com.sajt.kevin.tuturu.R;
 import com.sajt.kevin.tuturu.audio.Recorder;
 import com.sajt.kevin.tuturu.audio.Zandatsu;
 
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,8 +25,8 @@ import static com.sajt.kevin.tuturu.settings.SettingsActivity.runAlchemy;
 
 public class RecorderActivity extends AppCompatActivity {
 
-    private static Button btnRecord1, btnPlay1;
-    private static Button btnRecord2, btnPlay2, btnZandatsu;
+    private static Button btnRecordShort, btnPlayShort;
+    private static Button btnRecordLong, btnPlayLong;
     private static EditText nameText;
     private static TextView timerText;
     final int REQUEST_PERMISSION_CODE = 1000;
@@ -42,9 +44,9 @@ public class RecorderActivity extends AppCompatActivity {
 
             nameText = findViewById(R.id.nameText);
 
-            btnRecord1 = findViewById(R.id.recorder1Button);
+            btnRecordShort = findViewById(R.id.recorder1Button);
             timerText = findViewById(R.id.TimerText);
-            btnRecord1.setOnClickListener((view) -> {
+            btnRecordShort.setOnClickListener((view) -> {
                 if (!runAlchemy.get()) {
 
                     if (nameText.getText().toString().trim().length() > 0) {
@@ -79,8 +81,8 @@ public class RecorderActivity extends AppCompatActivity {
 
             });
 
-            btnPlay1 = findViewById(R.id.play1Button);
-            btnPlay1.setOnClickListener((view) -> {
+            btnPlayShort = findViewById(R.id.play1Button);
+            btnPlayShort.setOnClickListener((view) -> {
                 if (!recorderShort.getName().equals("")) {
                     recorderShort.startPlayingRecorder();
                 } else {
@@ -92,23 +94,25 @@ public class RecorderActivity extends AppCompatActivity {
 
             zandatsu = new Zandatsu();
 
-            btnRecord2 = findViewById(R.id.recorder2Button);
-            btnRecord2.setText("Record");
-            btnRecord2.setOnClickListener((view) -> {
+            btnRecordLong = findViewById(R.id.recorder2Button);
+            btnRecordLong.setText("Record");
+            btnRecordLong.setOnClickListener((view) -> {
                 if (!runAlchemy.get()) {
 
                     if (nameText.getText().toString().trim().length() > 0) {
                         zandatsu.setName(nameText.getText().toString().trim());
 
-                        if (btnRecord2.getText().toString().equals("Record")) {
-                            btnRecord2.setText("Stop");
+                        if (btnRecordLong.getText().toString().equals("Record")) {
+                            btnRecordLong.setText("Stop");
                             zandatsu.recordAudio();
 
-                        } else if (btnRecord2.getText().toString().equals("Stop")) {
-                            btnRecord2.setText("Record");
-                            zandatsu.stopRecordAudio();
+                        } else if (btnRecordLong.getText().toString().equals("Stop")) {
+                            btnRecordLong.setText("Record");
+                            if(zandatsu.stopRecordAudio()) {
+                                zandatsu.start();
+                            }
                         } else {
-                            btnRecord2.setText("Record");
+                            btnRecordLong.setText("Record");
                             Toast.makeText(this, "WTF", Toast.LENGTH_SHORT).show();
                         }
                     } else {
@@ -120,9 +124,9 @@ public class RecorderActivity extends AppCompatActivity {
 
             });
 
-            btnPlay2 = findViewById(R.id.play2Button);
-            btnPlay2.setText("Play");
-            btnPlay2.setOnClickListener((view) -> {
+            btnPlayLong = findViewById(R.id.play2Button);
+            btnPlayLong.setText("Play");
+            btnPlayLong.setOnClickListener((view) -> {
                 if (!zandatsu.getName().equals("")) {
                     zandatsu.playAudio();
                 } else {
@@ -130,19 +134,23 @@ public class RecorderActivity extends AppCompatActivity {
                 }
             });
 
-            btnZandatsu = findViewById(R.id.zandatsuButton);
-            btnZandatsu.setOnClickListener((view) -> {
-
-                if (zandatsu.start()) {
-                    Toast.makeText(this, "done", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "RAIDEEEEN", Toast.LENGTH_SHORT).show();
-                }
-            });
-
         } else {
             requestPermission();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
+                getAbsolutePath() + "/sajt/alma/";
+
+        File directory = new File(path);
+        File[] allFiles = directory.listFiles();
+        for(File file : allFiles) {
+            file.delete();
+        }
+
     }
 
     private void requestPermission() {

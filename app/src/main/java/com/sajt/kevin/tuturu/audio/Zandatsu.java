@@ -96,8 +96,11 @@ public class Zandatsu {
         recorder.startRecorder();
     }
 
-    public void stopRecordAudio() {
-        recorder.stopRecorder();
+    public boolean stopRecordAudio() {
+        if(recorder.stopRecorder())
+            return true;
+        else
+            return false;
     }
 
 }
