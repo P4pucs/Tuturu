@@ -23,11 +23,14 @@ public class Recorder {
     private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_8BIT;
     private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
 
-    //filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/" + getFileName();
+    String sajtFilePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt";
+    String almaFilePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/sajt/alma";
     private String name = "";
     private AudioRecord recorder = null;
     private Thread recordingThread = null;
     private boolean isRecording = false;
+    File sajtDirectory = null;
+    File almaDirectory = null;
 
 
     // Initialize minimum buffer size in bytes.
@@ -35,9 +38,24 @@ public class Recorder {
 
     public Recorder(String name) {
         this.name = name;
+        sajtDirectory = new File(sajtFilePath);
+        almaDirectory = new File(almaFilePath);
+
+        if (!sajtDirectory.exists())
+            sajtDirectory.mkdirs();
+        if (!almaDirectory.exists())
+            almaDirectory.mkdirs();
+
     }
 
     public Recorder() {
+        sajtDirectory = new File(sajtFilePath);
+        almaDirectory = new File(almaFilePath);
+
+        if (!sajtDirectory.exists())
+            sajtDirectory.mkdirs();
+        if (!almaDirectory.exists())
+            almaDirectory.mkdirs();
     }
 
     public String getName() {
